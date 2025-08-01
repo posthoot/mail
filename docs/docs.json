@@ -10,7 +10,7 @@
   "styling": {
     "codeblocks": "dark"
   },
-  "favicon": "/favicon.ico",
+  "favicon": "https://framerusercontent.com/images/2jfgELQurxaa4j6X2uRlzzUqopI.png",
   "navigation": {
     "tabs": [
       {
@@ -48,107 +48,38 @@
     "links": [
       {
         "label": "Log In",
-        "href": "https://app.infisical.com/login"
+        "href": "https://office.posthoot.com/auth/login"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Start for Free",
-      "href": "https://app.infisical.com/signup"
+      "href": "https://office.posthoot.com/auth/register"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://www.twitter.com/infisical/",
-      "linkedin": "https://www.linkedin.com/company/infisical/",
-      "github": "https://github.com/Infisical/infisical-cli",
-      "slack": "https://infisical.com/slack"
+      "x": "https://www.twitter.com/posthoot/",
+      "linkedin": "https://www.linkedin.com/company/posthoot/",
+      "github": "https://github.com/posthoot/mail",
+      "slack": "https://posthoot.com/slack"
     },
     "links": [
       {
         "header": "PRODUCT",
         "items": [
           {
-            "label": "Secret Management",
-            "href": "https://infisical.com/"
-          },
-          {
-            "label": "Secret Scanning",
-            "href": "https://infisical.com/radar"
-          },
-          {
-            "label": "Share Secrets",
-            "href": "https://app.infisical.com/share-secret"
+            "label": "Mail",
+            "href": "https://posthoot.com/"
           },
           {
             "label": "Pricing",
-            "href": "https://infisical.com/pricing"
-          },
-          {
-            "label": "Security",
-            "href": "https://infisical.com/docs/internals/security"
+            "href": "https://posthoot.com#pricing"
           },
           {
             "label": "Blog",
-            "href": "https://infisical.com/blog"
+            "href": "https://posthoot.com/blog"
           },
-          {
-            "label": "Infisical vs Vault",
-            "href": "https://infisical.com/infisical-vs-hashicorp-vault"
-          },
-          {
-            "label": "Forum",
-            "href": "https://questions.infisical.com/"
-          }
-        ]
-      },
-      {
-        "header": "USE CASES",
-        "items": [
-          {
-            "label": "Infisical Agent",
-            "href": "https://infisical.com/docs/documentation/getting-started/introduction"
-          },
-          {
-            "label": "Kubernetes",
-            "href": "https://infisical.com/docs/integrations/platforms/kubernetes"
-          },
-          {
-            "label": "Dynamic Secrets",
-            "href": "https://infisical.com/docs/documentation/platform/dynamic-secrets/overview"
-          },
-          {
-            "label": "Terraform",
-            "href": "https://infisical.com/docs/integrations/frameworks/terraform"
-          },
-          {
-            "label": "Ansible",
-            "href": "https://infisical.com/docs/integrations/platforms/ansible"
-          },
-          {
-            "label": "Jenkins",
-            "href": "https://infisical.com/docs/integrations/cicd/jenkins"
-          },
-          {
-            "label": "Docker",
-            "href": "https://infisical.com/docs/integrations/platforms/docker-intro"
-          },
-          {
-            "label": "AWS ECS",
-            "href": "https://infisical.com/docs/integrations/platforms/ecs-with-agent"
-          },
-          {
-            "label": "GitLab",
-            "href": "https://infisical.com/docs/integrations/cicd/gitlab"
-          },
-          {
-            "label": "GitHub",
-            "href": "https://infisical.com/docs/integrations/cicd/githubactions"
-          },
-          {
-            "label": "SDK",
-            "href": "https://infisical.com/docs/sdks/overview"
-          }
         ]
       },
       {
@@ -156,45 +87,17 @@
         "items": [
           {
             "label": "Changelog",
-            "href": "https://www.infisical.com/docs/changelog"
-          },
-          {
-            "label": "Status",
-            "href": "https://status.infisical.com/"
-          },
-          {
-            "label": "Feedback & Requests",
-            "href": "https://github.com/Infisical/infisical/issues"
-          },
-          {
-            "label": "Trust of Center",
-            "href": "https://app.vanta.com/infisical.com/trust/hoop8cr78cuarxo9sztvs"
-          },
-          {
-            "label": "Open Source Friends",
-            "href": "https://infisical.com/infisical-friends"
+            "href": "https://docs.posthoot.com/changelog"
           },
           {
             "label": "How to contribute",
-            "href": "https://www.infisical.com/infisical-heroes"
+            "href": "https://docs.posthoot.com/heroes"
           }
         ]
       },
       {
         "header": "OTHERS",
         "items": [
-          {
-            "label": "Customers",
-            "href": "https://infisical.com/customers/traba"
-          },
-          {
-            "label": "Company Handbook",
-            "href": "https://infisical.com/wiki/handbook/overview"
-          },
-          {
-            "label": "Careers",
-            "href": "https://infisical.com/careers"
-          },
           {
             "label": "Terms of Service",
             "href": "https://infisical.com/terms"
@@ -204,24 +107,16 @@
             "href": "https://infisical.com/privacy"
           },
           {
-            "label": "Subprocessors",
-            "href": "https://infisical.com/subprocessors"
-          },
-          {
-            "label": "SLA",
-            "href": "https://infisical.com/sla"
-          },
-          {
             "label": "Team Email",
-            "href": "mailto:team@infisical.com"
+            "href": "mailto:team@posthoot.com"
           },
           {
             "label": "Sales",
-            "href": "mailto:sales@infisical.com"
+            "href": "mailto:sales@posthoot.com"
           },
           {
             "label": "Support",
-            "href": "https://infisical.com/slack"
+            "href": "https://posthoot.com/slack"
           }
         ]
       }
