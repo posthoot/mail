@@ -30,7 +30,6 @@
     "href": "https://posthoot.com"
   },
   "api": {
-    "openapi": "https://api.posthoot.com/swagger/doc.json",
     "mdx": {
       "server": ["https://api.posthoot.com"]
     }
