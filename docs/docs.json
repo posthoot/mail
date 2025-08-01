@@ -10,7 +10,7 @@
   "styling": {
     "codeblocks": "dark"
   },
-  "favicon": "https://framerusercontent.com/images/2jfgELQurxaa4j6X2uRlzzUqopI.png",
+  "favicon": "./favicon.ico",
   "navigation": {
     "tabs": [
       {
