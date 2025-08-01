@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = server
+	url = https://github.com/posthoot/posthoot-backend.go
+[submodule "client"]
+	path = client
+	url = https://github.com/posthoot/posthoot-app.ts
