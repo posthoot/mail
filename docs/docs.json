@@ -89,9 +89,14 @@
             "group": "Tutorials",
             "pages": [
               "guides/quickstart",
-              "guides/authentication",
-              "guides/analytics",
-              "guides/webhooks"
+              "guides/self-hosting",
+              "guides/contributing"
+            ]
+          },
+          {
+            "group": "Technical",
+            "pages": [
+              "guides/technical-details"
             ]
           },
           {
