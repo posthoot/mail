@@ -4,7 +4,7 @@
 
 #navbar .max-w-8xl {
     max-width: 100%;
-    border-bottom: 1px solid #F08787;
+    border-bottom: 1px solid #7f7f7f;
     background-color: #ece9e9;
 }
 
@@ -16,9 +16,9 @@
     left: 0;
     padding-right: 30px;
     border-right: 1px;
-    border-color: #F08787;
+    border-color: #7f7f7f;
     background-color: #ece9e9;
-    border-right: 1px solid #F08787;
+    border-right: 1px solid #7f7f7f;
 }
 
 #sidebar-content {
@@ -35,7 +35,7 @@
 
 #sidebar li>a.text-primary {
     background-color: #FFE5E5;
-    border-left: 4px solid #F08787;
+    border-left: 4px solid #7f7f7f;
     padding: 5px;
 }
 
@@ -59,7 +59,7 @@
   } */
 
 #header {
-    border-left: 4px solid #F08787;
+    border-left: 4px solid #7f7f7f;
     padding-left: 16px;
     padding-right: 16px;
     background-color: #FDF0F0;
@@ -70,14 +70,14 @@
 #content-area .mt-8 .block {
     border-width: 1px;
     background-color: #FCF7F7;
-    border-color: #F08787;
+    border-color: #7f7f7f;
 }
 
 /* #content-area:hover .mt-8 .block:hover{
     
     border-width: 1px;
     background-color: #FDF0F0;
-    border-color: #F08787;
+    border-color: #7f7f7f;
   } */
 
 #content-area div.my-4 {

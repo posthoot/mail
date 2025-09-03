@@ -97,7 +97,6 @@
           {
             "group": "Self-Hosting",
             "pages": [
-              "guides/self-hosting",
               "guides/kubernetes-deployment",
               "guides/docker-deployment",
               "guides/systemd-deployment"
