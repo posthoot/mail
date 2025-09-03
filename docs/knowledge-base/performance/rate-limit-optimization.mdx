@@ -1,0 +1,301 @@
+# Rate Limit Optimization
+
+Want to send more emails faster without hitting rate limits? Here's how to optimize your API usage and handle rate limits like a pro.
+
+## 🚀 Understanding Rate Limits
+
+### Default Limits by Endpoint
+```javascript
+const rateLimits = {
+  'POST:/auth/login': { limit: 5, window: '1m' },
+  'GET:/api/v1/analytics': { limit: 100, window: '1m' },
+  'POST:/email': { limit: 50, window: '1m' },
+  'POST:/api/v1/files/upload': { limit: 10, window: '1m' },
+  'GET:/api/v1/t/open': { limit: 1000, window: '1m' }
+};
+```
+
+### Rate Limit Headers
+Every response includes these headers:
+```javascript
+X-RateLimit-Limit: 50        // Max requests per window
+X-RateLimit-Remaining: 23   // Requests left in current window
+X-RateLimit-Reset: 1640995200  // Unix timestamp when window resets
+```
+
+## ⚡ Optimization Strategies
+
+### 1. Batch Your Requests
+Instead of sending emails one by one:
+```javascript
+// ❌ Bad: 100 individual requests
+for (const email of emailList) {
+  await sendEmail(email); // 100 API calls
+}
+
+// ✅ Good: Batch requests
+const batchSize = 10;
+for (let i = 0; i < emailList.length; i += batchSize) {
+  const batch = emailList.slice(i, i + batchSize);
+  await sendBatchEmails(batch); // 10 API calls
+}
+```
+
+### 2. Use Connection Pooling
+Keep connections alive:
+```javascript
+// Reuse HTTP connections
+const agent = new https.Agent({
+  keepAlive: true,
+  maxSockets: 10,
+  maxFreeSockets: 5
+});
+
+const client = axios.create({
+  baseURL: 'https://api.posthoot.com',
+  httpsAgent: agent,
+  timeout: 30000
+});
+```
+
+### 3. Implement Caching
+Cache frequently accessed data:
+```javascript
+const cache = new Map();
+
+const getCachedData = async (key, ttl = 300000) => {
+  const cached = cache.get(key);
+  if (cached && Date.now() - cached.timestamp < ttl) {
+    return cached.data;
+  }
+  
+  const data = await fetchFromAPI(key);
+  cache.set(key, { data, timestamp: Date.now() });
+  return data;
+};
+```
+
+## 🔄 Rate Limit Handling
+
+### Exponential Backoff
+```javascript
+const sendWithBackoff = async (email, maxRetries = 5) => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await sendEmail(email);
+    } catch (error) {
+      if (error.status === 429) {
+        const waitTime = Math.min(1000 * Math.pow(2, attempt - 1), 30000);
+        console.log(`Rate limited. Waiting ${waitTime}ms...`);
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw new Error('Max retries exceeded');
+};
+```
+
+### Jitter Implementation
+Add randomness to prevent thundering herd:
+```javascript
+const addJitter = (baseDelay) => {
+  const jitter = Math.random() * 0.1 * baseDelay; // 10% jitter
+  return baseDelay + jitter;
+};
+
+const waitWithJitter = async (delay) => {
+  const jitteredDelay = addJitter(delay);
+  await new Promise(resolve => setTimeout(resolve, jitteredDelay));
+};
+```
+
+## 📊 Monitoring & Analytics
+
+### Track Rate Limit Usage
+```javascript
+class RateLimitTracker {
+  constructor() {
+    this.usage = new Map();
+  }
+
+  trackRequest(endpoint) {
+    const now = Date.now();
+    const window = Math.floor(now / 60000); // 1-minute windows
+    
+    if (!this.usage.has(endpoint)) {
+      this.usage.set(endpoint, new Map());
+    }
+    
+    const endpointUsage = this.usage.get(endpoint);
+    endpointUsage.set(window, (endpointUsage.get(window) || 0) + 1);
+  }
+
+  getUsage(endpoint) {
+    const now = Date.now();
+    const window = Math.floor(now / 60000);
+    return this.usage.get(endpoint)?.get(window) || 0;
+  }
+}
+```
+
+### Predictive Scaling
+```javascript
+const predictRateLimit = (endpoint, currentUsage) => {
+  const limits = {
+    'POST:/email': 50,
+    'GET:/api/v1/analytics': 100
+  };
+  
+  const limit = limits[endpoint];
+  const remaining = limit - currentUsage;
+  const timeToReset = 60 - (Date.now() % 60000) / 1000;
+  
+  return {
+    remaining,
+    timeToReset,
+    canSend: remaining > 0
+  };
+};
+```
+
+## 🎯 Best Practices
+
+### 1. Pre-warm Your Sending
+```javascript
+// Gradually increase sending volume
+const warmUpSending = async (targetVolume, days = 7) => {
+  const dailyIncrease = targetVolume / days;
+  
+  for (let day = 1; day <= days; day++) {
+    const volume = Math.floor(dailyIncrease * day);
+    await sendBatch(volume);
+    await sleep(24 * 60 * 60 * 1000); // Wait 24 hours
+  }
+};
+```
+
+### 2. Use Multiple SMTP Providers
+```javascript
+const smtpProviders = [
+  { name: 'gmail', config: gmailConfig },
+  { name: 'sendgrid', config: sendgridConfig },
+  { name: 'mailgun', config: mailgunConfig }
+];
+
+const sendWithFallback = async (email) => {
+  for (const provider of smtpProviders) {
+    try {
+      return await sendWithProvider(email, provider);
+    } catch (error) {
+      console.log(`Provider ${provider.name} failed:`, error.message);
+      continue;
+    }
+  }
+  throw new Error('All providers failed');
+};
+```
+
+### 3. Optimize Request Size
+```javascript
+// Compress large payloads
+const compressPayload = (data) => {
+  return gzip(JSON.stringify(data));
+};
+
+// Use streaming for large files
+const uploadLargeFile = async (filePath) => {
+  const stream = fs.createReadStream(filePath);
+  return await uploadStream(stream);
+};
+```
+
+## 🚨 Common Pitfalls
+
+### 1. Ignoring Rate Limit Headers
+```javascript
+// ❌ Bad: Not checking headers
+const response = await sendEmail(email);
+
+// ✅ Good: Check and respect headers
+const response = await sendEmail(email);
+const remaining = response.headers.get('X-RateLimit-Remaining');
+if (parseInt(remaining) < 5) {
+  console.warn('Rate limit almost reached!');
+}
+```
+
+### 2. Synchronous Processing
+```javascript
+// ❌ Bad: Blocking on each email
+for (const email of emails) {
+  await sendEmail(email); // Blocks until complete
+}
+
+// ✅ Good: Parallel processing
+const promises = emails.map(email => sendEmail(email));
+await Promise.all(promises);
+```
+
+### 3. No Error Recovery
+```javascript
+// ❌ Bad: Fail fast
+const sendAll = async (emails) => {
+  for (const email of emails) {
+    await sendEmail(email); // Stops on first error
+  }
+};
+
+// ✅ Good: Continue on errors
+const sendAll = async (emails) => {
+  const results = [];
+  for (const email of emails) {
+    try {
+      const result = await sendEmail(email);
+      results.push({ success: true, result });
+    } catch (error) {
+      results.push({ success: false, error });
+    }
+  }
+  return results;
+};
+```
+
+## 📈 Performance Metrics
+
+Track these metrics to optimize performance:
+- **Requests per second**: Target 50+ RPS
+- **Rate limit hits**: Keep under 1%
+- **Average response time**: Target < 200ms
+- **Error rate**: Keep under 0.1%
+- **Throughput**: Emails sent per minute
+
+## 🛠️ Tools & Libraries
+
+### Node.js Libraries
+```bash
+npm install axios-retry p-limit bottleneck
+```
+
+### Python Libraries
+```bash
+pip install tenacity ratelimit asyncio
+```
+
+### Go Libraries
+```go
+go get github.com/uber-go/ratelimit
+```
+
+## 📞 Need Help?
+
+If you're hitting rate limits frequently:
+
+1. **Review your sending patterns** - are you batching properly?
+2. **Check your SMTP configuration** - are you using multiple providers?
+3. **Monitor your usage** - are you tracking rate limit headers?
+4. **Contact support** for custom rate limit increases
+
+**Support**: [support@posthoot.com](mailto:support@posthoot.com)
+**Community**: [Slack](https://posthoot.com/slack)

@@ -14,54 +14,21 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "API Reference",
+        "tab": "Getting Started",
         "groups": [
           {
-            "group": "Getting Started",
+            "group": "Introduction",
             "pages": [
               "vision",
-              "introduction",
-              "authentication",
-              "rate-limiting",
-              "errors"
+              "introduction"
             ]
           },
           {
-            "group": "API Reference",
+            "group": "Core Concepts",
             "pages": [
-              "api-reference/get-audience-insights",
-              "api-reference/get-campaign-analytics",
-              "api-reference/compare-multiple-campaigns",
-              "api-reference/get-email-analytics",
-              "api-reference/export-campaign-analytics",
-              "api-reference/export-email-analytics",
-              "api-reference/get-click-heatmap",
-              "api-reference/get-team-overview",
-              "api-reference/get-trend-analysis",
-              "api-reference/create-a-new-tracking-entry",
-              "api-reference/handle-click-tracking",
-              "api-reference/handle-open-tracking",
-              "api-reference/files/upload-a-file",
-              "api-reference/users/get-current-user",
-              "api-reference/users/list-all-users",
-              "api-reference/users/get-user-details",
-              "api-reference/users/update-user-details",
-              "api-reference/users/delete-user",
-              "api-reference/auth/authenticate-with-google",
-              "api-reference/auth/invite-a-user-to-join-a-team",
-              "api-reference/auth/delete-a-team-invitation",
-              "api-reference/auth/login-user",
-              "api-reference/auth/request-password-reset",
-              "api-reference/auth/verify-reset-code-and-set-new-password",
-              "api-reference/auth/refresh-access-token",
-              "api-reference/auth/register-a-new-user",
-              "api-reference/subscriptions/get-current-subscription",
-              "api-reference/subscriptions/create-a-new-subscription",
-              "api-reference/subscriptions/get-enabled-features",
-              "api-reference/subscriptions/get-subscription-management-portal-url",
-              "api-reference/subscriptions/handle-subscription-webhooks",
-              "api-reference/email/send-an-email",
-              "api-reference/plans/get-all-plans"
+              "authentication",
+              "rate-limiting",
+              "errors"
             ]
           },
           {
@@ -94,8 +61,6 @@
               "tracking/click"
             ]
           },
-
-
           {
             "group": "Subscriptions",
             "pages": [
@@ -119,6 +84,84 @@
               "users/get",
               "users/update",
               "users/delete"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Analytics",
+            "pages": [
+              "api-reference/get-audience-insights",
+              "api-reference/get-campaign-analytics",
+              "api-reference/compare-multiple-campaigns",
+              "api-reference/get-email-analytics",
+              "api-reference/export-campaign-analytics",
+              "api-reference/export-email-analytics",
+              "api-reference/get-click-heatmap",
+              "api-reference/get-team-overview",
+              "api-reference/get-trend-analysis"
+            ]
+          },
+          {
+            "group": "Tracking",
+            "pages": [
+              "api-reference/create-a-new-tracking-entry",
+              "api-reference/handle-click-tracking",
+              "api-reference/handle-open-tracking"
+            ]
+          },
+          {
+            "group": "Files",
+            "pages": [
+              "api-reference/files/upload-a-file"
+            ]
+          },
+          {
+            "group": "Users",
+            "pages": [
+              "api-reference/users/get-current-user",
+              "api-reference/users/list-all-users",
+              "api-reference/users/get-user-details",
+              "api-reference/users/update-user-details",
+              "api-reference/users/delete-user"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "api-reference/auth/authenticate-with-google",
+              "api-reference/auth/invite-a-user-to-join-a-team",
+              "api-reference/auth/delete-a-team-invitation",
+              "api-reference/auth/login-user",
+              "api-reference/auth/request-password-reset",
+              "api-reference/auth/verify-reset-code-and-set-new-password",
+              "api-reference/auth/refresh-access-token",
+              "api-reference/auth/register-a-new-user"
+            ]
+          },
+          {
+            "group": "Subscriptions",
+            "pages": [
+              "api-reference/subscriptions/get-current-subscription",
+              "api-reference/subscriptions/create-a-new-subscription",
+              "api-reference/subscriptions/get-enabled-features",
+              "api-reference/subscriptions/get-subscription-management-portal-url",
+              "api-reference/subscriptions/handle-subscription-webhooks"
+            ]
+          },
+          {
+            "group": "Email",
+            "pages": [
+              "api-reference/email/send-an-email"
+            ]
+          },
+          {
+            "group": "Plans",
+            "pages": [
+              "api-reference/plans/get-all-plans"
             ]
           }
         ]
@@ -155,6 +198,27 @@
               "examples/python",
               "examples/curl"
             ]
+          }
+        ]
+      },
+      {
+        "tab": "Knowledge Base",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["knowledge-base/overview"]
+          },
+          {
+            "group": "Troubleshooting",
+            "pages": ["knowledge-base/troubleshooting/common-errors"]
+          },
+          {
+            "group": "Best Practices",
+            "pages": ["knowledge-base/best-practices/email-deliverability"]
+          },
+          {
+            "group": "Performance",
+            "pages": ["knowledge-base/performance/rate-limit-optimization"]
           }
         ]
       },

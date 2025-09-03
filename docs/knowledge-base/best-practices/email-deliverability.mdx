@@ -1,0 +1,196 @@
+# Email Deliverability Best Practices
+
+Want your emails to actually reach inboxes instead of spam folders? Here's everything you need to know about email deliverability.
+
+## 🏠 Domain & DNS Setup
+
+### SPF Record
+Add this to your DNS to prevent spoofing:
+```
+v=spf1 include:_spf.google.com include:_spf.posthoot.com ~all
+```
+
+### DKIM Authentication
+Enable DKIM signing for your domain:
+```bash
+# Generate DKIM key
+openssl genrsa -out private.key 2048
+openssl rsa -in private.key -pubout -out public.key
+```
+
+### DMARC Policy
+Set up DMARC to monitor and protect your domain:
+```
+v=DMARC1; p=quarantine; rua=mailto:dmarc@yourdomain.com
+```
+
+## 📧 Email Content Best Practices
+
+### Subject Lines
+✅ **Do:**
+- Keep under 50 characters
+- Be specific and relevant
+- Use personalization: "Hey {{name}}, your order is ready!"
+- Test different variations
+
+❌ **Don't:**
+- Use ALL CAPS
+- Include spam trigger words: "FREE", "ACT NOW", "LIMITED TIME"
+- Use excessive punctuation: "!!!"
+- Be misleading or clickbait
+
+### Email Body
+✅ **Do:**
+- Use a clear, professional tone
+- Include your physical address (required by law)
+- Provide an unsubscribe link
+- Test on mobile devices
+- Keep HTML simple and clean
+
+❌ **Don't:**
+- Use excessive images (text-to-image ratio should be 80:20)
+- Include suspicious links
+- Use poor grammar or spelling
+- Send from "noreply@" addresses
+
+## 📊 List Management
+
+### Clean Your List Regularly
+```javascript
+// Remove bounced emails
+const cleanList = async (emailList) => {
+  const cleaned = emailList.filter(email => {
+    return !email.bounced && !email.unsubscribed;
+  });
+  return cleaned;
+};
+```
+
+### Double Opt-in
+Always confirm subscriptions:
+```javascript
+// Send confirmation email
+await sendEmail({
+  to: user.email,
+  subject: "Confirm your subscription",
+  body: `Click here to confirm: ${confirmationLink}`
+});
+```
+
+### Unsubscribe Handling
+Make it easy to unsubscribe:
+```html
+<!-- Always include this -->
+<p>Don't want these emails? <a href="{{unsubscribe_url}}">Unsubscribe</a></p>
+```
+
+## 🚀 Sending Best Practices
+
+### Warm Up Your IP
+Start slow and gradually increase volume:
+- Day 1-7: 50 emails/day
+- Day 8-14: 100 emails/day
+- Day 15-21: 250 emails/day
+- Day 22+: 500+ emails/day
+
+### Send at Optimal Times
+Based on your audience:
+- **B2B**: Tuesday-Thursday, 9-11 AM
+- **B2C**: Tuesday-Thursday, 6-8 PM
+- **Weekends**: Avoid unless your audience is active
+
+### Monitor Your Reputation
+Track these metrics:
+- **Bounce Rate**: Keep under 2%
+- **Spam Complaints**: Keep under 0.1%
+- **Open Rate**: Aim for 20%+
+- **Click Rate**: Aim for 2%+
+
+## 🔧 Technical Setup
+
+### SMTP Configuration
+```javascript
+// Use proper SMTP settings
+const smtpConfig = {
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // Use TLS
+  auth: {
+    user: 'your-email@gmail.com',
+    pass: 'your-app-password'
+  }
+};
+```
+
+### Rate Limiting
+Respect rate limits to avoid being flagged:
+```javascript
+// Implement exponential backoff
+const sendWithBackoff = async (email, retries = 3) => {
+  try {
+    return await sendEmail(email);
+  } catch (error) {
+    if (error.status === 429 && retries > 0) {
+      await new Promise(resolve => 
+        setTimeout(resolve, Math.pow(2, 4 - retries) * 1000)
+      );
+      return sendWithBackoff(email, retries - 1);
+    }
+    throw error;
+  }
+};
+```
+
+## 📈 Monitoring & Testing
+
+### Test Before Sending
+```javascript
+// Send test emails to yourself first
+const testEmail = async () => {
+  await sendEmail({
+    to: 'your-email@domain.com',
+    subject: 'Test Email',
+    body: 'This is a test email'
+  });
+};
+```
+
+### Monitor Deliverability
+Check these regularly:
+- **Inbox Placement**: Use tools like Mail Tester
+- **Spam Score**: Keep under 5/10
+- **Authentication**: Verify SPF, DKIM, DMARC
+- **Blacklist Status**: Check major blacklists
+
+## 🛠️ Tools & Resources
+
+### Testing Tools
+- **Mail Tester**: Test email deliverability
+- **GlockApps**: Check spam score
+- **250ok**: Monitor sending reputation
+- **MXToolbox**: Check blacklist status
+
+### Monitoring Services
+- **Postmark**: Real-time delivery tracking
+- **SendGrid**: Detailed analytics
+- **Mailgun**: Bounce and complaint handling
+
+## 🚨 Common Mistakes to Avoid
+
+1. **Buying Email Lists**: Never buy lists - always grow organically
+2. **Ignoring Bounces**: Remove hard bounces immediately
+3. **Sending Too Fast**: Respect rate limits and warm up gradually
+4. **Poor List Hygiene**: Clean your list regularly
+5. **No Authentication**: Always set up SPF, DKIM, DMARC
+
+## 📞 Need Help?
+
+If you're still having deliverability issues:
+
+1. **Check your sending reputation** on major ISPs
+2. **Review your email content** for spam triggers
+3. **Verify your DNS settings** are correct
+4. **Contact our support team** for personalized help
+
+**Support**: [support@posthoot.com](mailto:support@posthoot.com)
+**Community**: [Slack](https://posthoot.com/slack)
