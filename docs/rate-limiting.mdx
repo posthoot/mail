@@ -23,15 +23,20 @@ X-RateLimit-Reset: 1640995200
 - **Login**: 5 requests per minute per IP
 - **Register**: 3 requests per hour per IP
 - **Password Reset**: 3 requests per hour per IP
+- **Token Refresh**: 10 requests per minute per IP
 
-### General API Endpoints
-- **Standard**: 1000 requests per hour per IP
+### API Endpoints
 - **Analytics**: 100 requests per minute per IP
-- **File Upload**: 50 requests per hour per IP
+- **Email Sending**: 50 requests per minute per IP
+- **File Upload**: 20 requests per minute per IP
+- **Tracking (Open/Click)**: 1000 requests per minute per IP
+- **Default**: 100 requests per minute per IP
 
-### API Key Limits
-- **Standard**: 10,000 requests per hour per API key
-- **Analytics**: 1,000 requests per minute per API key
+### Rate Limit Windows
+- **Authentication**: 1 minute to 1 hour depending on endpoint
+- **API Calls**: 1 minute window
+- **File Operations**: 1 minute window
+- **Tracking**: 1 minute window (high volume expected)
 
 ## 🚨 Rate Limit Exceeded
 
@@ -40,10 +45,19 @@ When you exceed rate limits, you'll receive a `429 Too Many Requests` response:
 ```json
 {
   "error": "rate_limit_exceeded",
-  "message": "Rate limit exceeded. Try again in 60 seconds.",
-  "retry_after": 60
+  "message": "Rate limit exceeded. Try again later.",
+  "retry_after": 60,
+  "limit": 100,
+  "window": 60
 }
 ```
+
+The response includes:
+- `error`: Error type identifier
+- `message`: Human-readable error message
+- `retry_after`: Seconds to wait before retrying
+- `limit`: Total requests allowed in the window
+- `window`: Time window in seconds
 
 ## 🔄 Retry Strategy
 
@@ -88,6 +102,11 @@ const reset = response.headers['x-ratelimit-reset'];
 console.log(`Used ${limit - remaining}/${limit} requests`);
 console.log(`Resets at ${new Date(reset * 1000)}`);
 ```
+
+### Rate Limit Headers Explained
+- `X-RateLimit-Limit`: Total requests allowed per window
+- `X-RateLimit-Remaining`: Requests remaining in current window
+- `X-RateLimit-Reset`: Unix timestamp when the window resets
 
 ### Usage Alerts
 Set up alerts when approaching limits:
@@ -143,17 +162,100 @@ setInterval(async () => {
 
 ## 🔧 Custom Limits
 
+### IP-Based Limits
+The system supports custom rate limits for specific IP addresses:
+
+```go
+IPLimits: map[string]IPLimit{
+    "192.168.1.100": {
+        Limit:  200.0 / 60.0, // 200 requests per minute
+        Burst:  100,
+        Window: time.Minute,
+    },
+}
+```
+
+### User-Based Limits
+Authenticated users can have custom rate limits:
+
+```go
+AuthLimits: map[string]AuthLimit{
+    "user123": {
+        Limit:  500.0 / 60.0, // 500 requests per minute
+        Burst:  250,
+        Window: time.Minute,
+    },
+}
+```
+
 ### Enterprise Plans
 Enterprise customers can request custom rate limits:
 
 - Higher limits for specific endpoints
 - Custom burst allowances
 - Priority queuing
+- IP-based whitelisting
 
 ### Contact Support
 Email [team@posthoot.com](mailto:team@posthoot.com) to discuss custom rate limits.
 
+## 🔧 Technical Implementation
+
+### Rate Limiting Architecture
+The rate limiting system uses Redis for distributed rate limiting with the following components:
+
+- **Redis Storage**: Rate limit counters stored with TTL
+- **Client Identification**: User ID or IP address based
+- **Endpoint Grouping**: Normalized paths for better grouping
+- **Pipeline Operations**: Atomic Redis operations for consistency
+
+### Endpoint Normalization
+Dynamic parts of URLs are normalized for better rate limit grouping:
+
+```go
+// Example normalizations
+"/api/v1/analytics/campaign/123" → "/api/v1/analytics/campaign"
+"/auth/users/456" → "/auth/users"
+```
+
+### Redis Key Structure
+```
+rate_limit:{clientID}:{method}:{normalizedPath}
+```
+
+Examples:
+- `rate_limit:user:123:POST:/auth/login`
+- `rate_limit:ip:192.168.1.100:GET:/api/v1/analytics`
+
+### Burst Handling
+The system supports burst allowances for handling traffic spikes:
+
+- **Burst**: Maximum requests allowed in a single burst
+- **Window**: Time window for rate limiting
+- **Default Burst**: 50 requests for standard endpoints
+
 ## 📊 Rate Limit Analytics
+
+### Client Identification
+The system identifies clients using the following priority:
+
+1. **User ID** (for authenticated requests)
+2. **IP Address** (fallback for unauthenticated requests)
+
+IP addresses are extracted from:
+- `X-Forwarded-For` header (for proxy setups)
+- `X-Real-IP` header
+- Remote address
+
+### Redis Storage
+Rate limit data is stored in Redis with keys formatted as:
+```
+rate_limit:{clientID}:{endpointKey}
+```
+
+Example keys:
+- `rate_limit:user:123:POST:/auth/login`
+- `rate_limit:ip:192.168.1.100:GET:/api/v1/analytics`
 
 ### Dashboard
 Monitor your API usage in the Posthoot dashboard:
@@ -187,8 +289,19 @@ curl -X GET https://api.posthoot.com/usage \
    - Track response times
    - Identify slow endpoints
 
+5. **Handle Redis Failures Gracefully**
+   - The system allows requests when Redis is unavailable
+   - Log Redis errors for monitoring
+   - Implement fallback rate limiting if needed
+
+6. **Use Appropriate Endpoints**
+   - Use tracking endpoints for email opens/clicks (high limits)
+   - Use analytics endpoints for data retrieval (moderate limits)
+   - Use authentication endpoints sparingly (strict limits)
+
 ## 📚 Related Topics
 
 - [Error Handling](/errors) - Handle rate limit errors gracefully
-- [Authentication](/authentication) - Understand API key limits
+- [Authentication](/authentication) - Understand JWT token limits
 - [Webhooks](/guides/webhooks) - Use webhooks to reduce polling
+- [Self Hosting](/guides/self-hosting) - Configure rate limits for your deployment
