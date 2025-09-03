@@ -4,7 +4,7 @@
 
 #navbar .max-w-8xl {
     max-width: 100%;
-    border-bottom: 1px solid #7f7f7f;
+    border-bottom: 1px solid #00000024;
     background-color: #ece9e9;
 }
 
@@ -16,9 +16,9 @@
     left: 0;
     padding-right: 30px;
     border-right: 1px;
-    border-color: #7f7f7f;
+    border-color: #00000024;
     background-color: #ece9e9;
-    border-right: 1px solid #7f7f7f;
+    border-right: 1px solid #00000024;
 }
 
 #sidebar-content {
@@ -70,14 +70,14 @@
 #content-area .mt-8 .block {
     border-width: 1px;
     background-color: #FCF7F7;
-    border-color: #7f7f7f;
+    border-color: #00000024;
 }
 
 /* #content-area:hover .mt-8 .block:hover{
     
     border-width: 1px;
     background-color: #FDF0F0;
-    border-color: #7f7f7f;
+    border-color: #00000024;
   } */
 
 #content-area div.my-4 {
