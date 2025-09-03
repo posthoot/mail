@@ -5,50 +5,53 @@ description: 'Complete guide to self-host the Posthoot backend service'
 
 # Self-Hosting Guide
 
-This guide will walk you through setting up and running your own instance of the Posthoot backend service.
+Want to run Posthoot on your own servers? This guide will walk you through setting up your own instance. It's actually pretty straightforward - we've made it as simple as possible.
 
-## Prerequisites
+## What you'll need
 
-Before you begin, ensure you have the following installed on your system:
+Before we start, make sure you have these installed:
 
 - **Go 1.21+** - [Download here](https://golang.org/dl/)
 - **PostgreSQL 14+** - [Download here](https://www.postgresql.org/download/)
 - **Redis 6+** - [Download here](https://redis.io/download)
 - **Git** - [Download here](https://git-scm.com/downloads)
 
-### System Requirements
+### Server specs
 
-- **CPU**: 2+ cores recommended
+For a basic setup, you'll want:
+- **CPU**: 2+ cores (more is better)
 - **RAM**: 4GB minimum, 8GB recommended
-- **Storage**: 20GB minimum for database and logs
-- **Network**: Stable internet connection for external services
+- **Storage**: 20GB for database and logs
+- **Network**: Stable internet connection
+
+If you're just testing locally, you can get away with less, but for production, these are the minimums we'd recommend.
 
 ## Quick Start
 
-### 1. Clone the Repository
+### 1. Get the code
 
 ```bash
 git clone https://github.com/posthoot/posthoot-backend.git
 cd posthoot-backend
 ```
 
-### 2. Environment Setup
+### 2. Set up your environment
 
-Create a `.env` file in the root directory:
+Copy the example config and edit it:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit the `.env` file with your configuration:
+Here's what you need to configure in your `.env` file:
 
 ```env
-# Server Configuration
+# Server settings
 SERVER_HOST=0.0.0.0
 SERVER_PORT=8080
 PUBLIC_URL=http://your-domain.com
 
-# Database Configuration
+# Database (PostgreSQL)
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_USER=posthoot_user
@@ -56,29 +59,29 @@ POSTGRES_PASSWORD=your_secure_password
 POSTGRES_DB=posthoot
 POSTGRES_SSLMODE=disable
 
-# JWT Configuration
+# Security
 JWT_SECRET=your_very_long_and_secure_jwt_secret_key_here
 
-# Storage Configuration
+# Storage
 STORAGE_PROVIDER=local
 STORAGE_BASE_PATH=./storage
 
-# Worker Configuration
+# Workers (for processing emails)
 WORKER_CONCURRENCY=5
 WORKER_QUEUE_SIZE=100
 
-# Redis Configuration
+# Redis (for caching and rate limiting)
 REDIS_HOST=localhost
 REDIS_PORT=6379
 REDIS_PASSWORD=your_redis_password
 REDIS_DB=0
 
-# Super Admin Configuration (First Run)
+# Admin account (created on first run)
 SUPERADMIN_EMAIL=admin@yourdomain.com
 SUPERADMIN_PASSWORD=secure_admin_password
 SUPERADMIN_NAME=Admin
 
-# SMTP Configuration (for email sending)
+# SMTP (for sending emails)
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
@@ -86,21 +89,21 @@ SMTP_PASSWORD=your-app-password
 SMTP_FROM_EMAIL=noreply@yourdomain.com
 SMTP_PROVIDER=GMAIL
 
-# Optional: S3 Configuration (for file storage)
+# Optional: S3 for file storage
 S3_BUCKET_NAME=your-bucket-name
 S3_ENDPOINT=https://s3.amazonaws.com
 S3_REGION=us-east-1
 S3_ACCESS_KEY=your-access-key
 S3_SECRET_KEY=your-secret-key
 
-# Optional: Dodo Payments (for subscriptions)
+# Optional: Dodo Payments for subscriptions
 DODO_API_KEY=your_dodo_api_key
 DODO_WEBHOOK_SECRET=your_dodo_webhook_secret
 ```
 
-### 3. Database Setup
+### 3. Set up the database
 
-Create the PostgreSQL database:
+Create your PostgreSQL database:
 
 ```bash
 # Connect to PostgreSQL
@@ -113,9 +116,9 @@ GRANT ALL PRIVILEGES ON DATABASE posthoot TO posthoot_user;
 \q
 ```
 
-### 4. Redis Setup
+### 4. Install Redis
 
-Install and start Redis:
+Install and start Redis (pick your OS):
 
 ```bash
 # Ubuntu/Debian
@@ -134,31 +137,34 @@ sudo systemctl enable redis
 sudo systemctl start redis
 ```
 
-### 5. Install Dependencies
+### 5. Get the dependencies
 
 ```bash
 go mod download
 ```
 
-### 6. Run the Application
+### 6. Start the server
 
 ```bash
 go run cmd/server/main.go
 ```
 
-The server will start on `http://localhost:8080` (or your configured host/port).
+That's it! Your server should be running on `http://localhost:8080` (or whatever you configured).
 
 ## Production Deployment
 
-### Using Docker
+### Option 1: Docker (Recommended)
 
-1. **Build the Docker image:**
+This is the easiest way to deploy. Just build and run:
 
 ```bash
+# Build the image
 docker build -t posthoot-backend .
+
+# Create docker-compose.yml
 ```
 
-2. **Create a docker-compose.yml file:**
+Here's your `docker-compose.yml`:
 
 ```yaml
 version: '3.8'
@@ -200,21 +206,22 @@ volumes:
   redis_data:
 ```
 
-3. **Start the services:**
+Then start everything:
 
 ```bash
 docker-compose up -d
 ```
 
-### Using Systemd (Linux)
+### Option 2: Systemd (Linux)
 
-1. **Create a systemd service file:**
+If you prefer to run it as a system service:
 
 ```bash
+# Create the service file
 sudo nano /etc/systemd/system/posthoot.service
 ```
 
-2. **Add the following content:**
+Add this content:
 
 ```ini
 [Unit]
@@ -234,22 +241,23 @@ RestartSec=5
 WantedBy=multi-user.target
 ```
 
-3. **Enable and start the service:**
+Then enable and start it:
 
 ```bash
 sudo systemctl enable posthoot
 sudo systemctl start posthoot
 ```
 
-### Using PM2 (Node.js Process Manager)
+### Option 3: PM2 (if you're familiar with it)
 
-1. **Install PM2:**
+If you're already using PM2 for other services:
 
 ```bash
+# Install PM2
 npm install -g pm2
-```
 
-2. **Create ecosystem.config.js:**
+# Create ecosystem.config.js
+```
 
 ```javascript
 module.exports = {
@@ -271,7 +279,7 @@ module.exports = {
 }
 ```
 
-3. **Start the application:**
+Then start it:
 
 ```bash
 pm2 start ecosystem.config.js
@@ -279,26 +287,28 @@ pm2 save
 pm2 startup
 ```
 
-## Configuration Options
+## Configuration
 
-### Environment Variables
+### Environment variables
 
-| Variable | Description | Default | Required |
+Here are the main settings you can configure:
+
+| Variable | What it does | Default | Required? |
 |----------|-------------|---------|----------|
-| `SERVER_HOST` | Server host address | `localhost` | No |
-| `SERVER_PORT` | Server port | `8080` | No |
-| `PUBLIC_URL` | Public URL for the service | `http://localhost:8080` | No |
-| `POSTGRES_HOST` | PostgreSQL host | `localhost` | Yes |
-| `POSTGRES_PORT` | PostgreSQL port | `5432` | No |
-| `POSTGRES_USER` | PostgreSQL username | - | Yes |
-| `POSTGRES_PASSWORD` | PostgreSQL password | - | Yes |
-| `POSTGRES_DB` | PostgreSQL database name | `posthoot` | No |
-| `JWT_SECRET` | JWT signing secret | - | Yes |
+| `SERVER_HOST` | Where to bind the server | `localhost` | No |
+| `SERVER_PORT` | Port to run on | `8080` | No |
+| `PUBLIC_URL` | Your public URL | `http://localhost:8080` | No |
+| `POSTGRES_HOST` | Database host | `localhost` | Yes |
+| `POSTGRES_PORT` | Database port | `5432` | No |
+| `POSTGRES_USER` | Database username | - | Yes |
+| `POSTGRES_PASSWORD` | Database password | - | Yes |
+| `POSTGRES_DB` | Database name | `posthoot` | No |
+| `JWT_SECRET` | Secret for signing tokens | - | Yes |
 | `REDIS_HOST` | Redis host | `localhost` | No |
 | `REDIS_PORT` | Redis port | `6379` | No |
 | `REDIS_PASSWORD` | Redis password | - | No |
-| `SUPERADMIN_EMAIL` | Super admin email | - | Yes (first run) |
-| `SUPERADMIN_PASSWORD` | Super admin password | - | Yes (first run) |
+| `SUPERADMIN_EMAIL` | Admin email | - | Yes (first run) |
+| `SUPERADMIN_PASSWORD` | Admin password | - | Yes (first run) |
 
 ### Storage Options
 
