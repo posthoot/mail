@@ -1,0 +1,41 @@
+---
+title: 'Client Setup'
+description: 'How to install and run the Posthoot client locally'
+---
+
+# Client Setup
+
+## Prerequisites
+
+- Node.js 20+ (or Bun 1.1+)
+- pnpm/npm/yarn (your preference)
+- Git
+
+## Install
+
+```bash
+cd client
+pnpm install   # or npm install / yarn
+```
+
+## Run Dev Server
+
+```bash
+pnpm dev       # http://localhost:3000
+```
+
+## Build & Start
+
+```bash
+pnpm build
+pnpm start     # production
+```
+
+## Scripts (package.json)
+
+- `dev`: start Next.js dev server
+- `build`: build production
+- `start`: start production server
+- `test`: run unit tests
+
+See also: [Environment](/client/env), [Development](/client/development)

@@ -202,6 +202,31 @@
         ]
       },
       {
+        "tab": "Client",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": ["client/overview"]
+          },
+          {
+            "group": "Setup",
+            "pages": [
+              "client/setup",
+              "client/env",
+              "client/development"
+            ]
+          },
+          {
+            "group": "Testing",
+            "pages": ["client/testing"]
+          },
+          {
+            "group": "Deployment",
+            "pages": ["client/deployment"]
+          }
+        ]
+      },
+      {
         "tab": "Knowledge Base",
         "groups": [
           {

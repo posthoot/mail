@@ -1,0 +1,46 @@
+---
+title: 'Client Overview'
+description: 'Overview of the Posthoot client (Next.js) application'
+---
+
+# Client Overview
+
+The Posthoot client is a Next.js 14 app that provides the web UI for campaigns, analytics, templates, contacts, and settings.
+
+## Tech Stack
+
+- Framework: Next.js 14 (App Router)
+- Language: TypeScript
+- UI: Tailwind CSS, shadcn/ui
+- Auth: NextAuth.js
+- State/Queries: React Query
+- Testing: Jest + Testing Library
+- Build: Bun/Node
+
+## Folder Structure (client/)
+
+```text
+client/
+  app/                 # Next.js routes (App Router)
+  components/          # Reusable UI and feature components
+  hooks/               # Custom React hooks
+  lib/                 # Client-side utilities/services
+  types/               # TypeScript types
+  public/              # Static assets
+  scripts/             # Helper scripts
+```
+
+## Key Features
+
+- Authentication via NextAuth with server-side session
+- API integration via lib/services (typed)
+- Rich UI components for analytics and campaigns
+- Email template builder components
+
+## Related Docs
+
+- [Setup](/client/setup)
+- [Environment Variables](/client/env)
+- [Development & Scripts](/client/development)
+- [Testing](/client/testing)
+- [Deployment](/client/deployment)
