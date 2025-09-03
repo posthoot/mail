@@ -1,0 +1,174 @@
+---
+title: 'API Reference'
+description: 'Complete API reference for Posthoot - Email automation and analytics platform'
+---
+
+# API Reference
+
+Welcome to the Posthoot API reference. This is your complete guide to integrating with our email automation and analytics platform.
+
+## Quick Start
+
+The Posthoot API is RESTful and follows standard HTTP conventions. All requests should be made to `https://api.posthoot.com` and include proper authentication headers.
+
+```bash
+curl -X GET "https://api.posthoot.com/api/v1/users/me" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json"
+```
+
+## Authentication
+
+Most API endpoints require authentication. You can authenticate using:
+
+- **Bearer Token**: Include your API key in the Authorization header
+- **JWT Token**: For user-specific operations
+
+```bash
+# Using API Key
+Authorization: Bearer pk_live_your_api_key_here
+
+# Using JWT Token  
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+## Base URL
+
+```
+https://api.posthoot.com
+```
+
+## API Versioning
+
+The API is versioned using the URL path. Currently, we support:
+
+- **v1**: Current stable version (recommended)
+
+```
+https://api.posthoot.com/api/v1/
+```
+
+## Response Format
+
+All API responses are returned in JSON format with the following structure:
+
+```json
+{
+  "data": {
+    // Response data here
+  },
+  "message": "Success message",
+  "status": "success"
+}
+```
+
+## Error Handling
+
+Errors follow a consistent format:
+
+```json
+{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid request parameters",
+    "details": {
+      "field": "email",
+      "issue": "Email format is invalid"
+    }
+  },
+  "status": "error"
+}
+```
+
+## Rate Limiting
+
+API requests are rate-limited to ensure fair usage:
+
+- **Authentication endpoints**: 5 requests per minute
+- **API endpoints**: 100 requests per minute
+- **File uploads**: 10 requests per minute
+
+Rate limit headers are included in all responses:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1640995200
+```
+
+## API Endpoints
+
+### Authentication
+- [Register User](/auth/register) - Create a new user account
+- [Login User](/auth/login) - Authenticate and get JWT token
+- [Google OAuth](/auth/google) - Authenticate with Google
+- [Refresh Token](/auth/refresh) - Refresh expired JWT token
+- [Password Reset](/auth/password-reset) - Request password reset
+- [Invite User](/auth/invite) - Invite user to team
+
+### User Management
+- [Get Current User](/users/me) - Get authenticated user details
+- [List Users](/users/list) - List all users in team
+- [Get User](/users/get) - Get specific user details
+- [Update User](/users/update) - Update user information
+- [Delete User](/users/delete) - Delete user account
+
+### Email Operations
+- [Send Email](/email/send) - Send transactional emails
+- [Email Templates](/templates) - Manage email templates
+- [Campaigns](/campaigns) - Create and manage email campaigns
+
+### Analytics
+- [Campaign Analytics](/analytics/campaign) - Campaign performance metrics
+- [Email Analytics](/analytics/email) - Email delivery and engagement
+- [Audience Insights](/analytics/audience) - Subscriber behavior analysis
+- [Team Overview](/analytics/team) - Team-wide performance summary
+- [Trend Analysis](/analytics/trends) - Historical performance trends
+- [Click Heatmap](/analytics/heatmap) - Visual click tracking data
+
+### File Management
+- [Upload File](/files/upload) - Upload files for email attachments
+
+### Subscriptions & Billing
+- [Get Plans](/plans) - View available subscription plans
+- [Create Subscription](/subscriptions/create) - Start a new subscription
+- [Get Features](/subscriptions/features) - View enabled features
+- [Manage Subscription](/subscriptions/portal) - Access billing portal
+
+### Email Tracking
+- [Open Tracking](/tracking/open) - Track email opens
+- [Click Tracking](/tracking/click) - Track link clicks
+
+## SDKs & Libraries
+
+We provide official SDKs for popular languages:
+
+- **Node.js**: `npm install @posthoot/sdk`
+- **Python**: `pip install posthoot-sdk`
+- **Go**: `go get github.com/posthoot/go-sdk`
+- **PHP**: `composer require posthoot/php-sdk`
+
+## Webhooks
+
+Configure webhooks to receive real-time notifications:
+
+- **Email Events**: Opens, clicks, bounces, complaints
+- **Campaign Events**: Started, completed, paused
+- **Subscription Events**: Created, updated, cancelled
+
+## Support
+
+Need help integrating with our API?
+
+- **Documentation**: Browse our guides and examples
+- **Community**: Join our [Slack community](https://posthoot.com/slack)
+- **Support**: Email us at [support@posthoot.com](mailto:support@posthoot.com)
+- **GitHub**: Check our [open source repositories](https://github.com/posthoot)
+
+## Changelog
+
+Stay updated with our [API changelog](/changelog) for the latest features, improvements, and breaking changes.
+
+---
+
+Ready to get started? Check out our [quickstart guide](/guides/quickstart) or dive into the [authentication docs](/authentication).
