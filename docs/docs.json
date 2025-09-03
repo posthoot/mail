@@ -27,6 +27,44 @@
             ]
           },
           {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/get-audience-insights",
+              "api-reference/get-campaign-analytics",
+              "api-reference/compare-multiple-campaigns",
+              "api-reference/get-email-analytics",
+              "api-reference/export-campaign-analytics",
+              "api-reference/export-email-analytics",
+              "api-reference/get-click-heatmap",
+              "api-reference/get-team-overview",
+              "api-reference/get-trend-analysis",
+              "api-reference/create-a-new-tracking-entry",
+              "api-reference/handle-click-tracking",
+              "api-reference/handle-open-tracking",
+              "api-reference/files/upload-a-file",
+              "api-reference/users/get-current-user",
+              "api-reference/users/list-all-users",
+              "api-reference/users/get-user-details",
+              "api-reference/users/update-user-details",
+              "api-reference/users/delete-user",
+              "api-reference/auth/authenticate-with-google",
+              "api-reference/auth/invite-a-user-to-join-a-team",
+              "api-reference/auth/delete-a-team-invitation",
+              "api-reference/auth/login-user",
+              "api-reference/auth/request-password-reset",
+              "api-reference/auth/verify-reset-code-and-set-new-password",
+              "api-reference/auth/refresh-access-token",
+              "api-reference/auth/register-a-new-user",
+              "api-reference/subscriptions/get-current-subscription",
+              "api-reference/subscriptions/create-a-new-subscription",
+              "api-reference/subscriptions/get-enabled-features",
+              "api-reference/subscriptions/get-subscription-management-portal-url",
+              "api-reference/subscriptions/handle-subscription-webhooks",
+              "api-reference/email/send-an-email",
+              "api-reference/plans/get-all-plans"
+            ]
+          },
+          {
             "group": "Authentication",
             "pages": [
               "auth/register",
@@ -56,6 +94,8 @@
               "tracking/click"
             ]
           },
+
+
           {
             "group": "Subscriptions",
             "pages": [
@@ -134,7 +174,7 @@
     "dark": "/logo/dark.svg",
     "href": "https://posthoot.com"
   },
-  "openapi": "https://api.posthoot.com/openapi.json",
+  "openapi": "./server/openapi.json",
   "api": {
     "mdx": {
       "server": ["https://api.posthoot.com"]
