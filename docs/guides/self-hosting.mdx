@@ -162,6 +162,20 @@ The easiest way to deploy with containerization. Perfect for most users.
 - **Easy scaling** and management
 - **Consistent deployments** across environments
 
+> Prebuilt container images
+>
+> You can pull ready-to-run images from GitHub Container Registry:
+>
+> ```bash
+> # Next.js client (app)
+> docker pull ghcr.io/posthoot/posthoot-app.ts:latest
+>
+> # Go backend API (server)
+> docker pull ghcr.io/posthoot/posthoot-backend.go:latest
+> ```
+>
+> Use these images directly in your Docker Compose / Kubernetes manifests for faster deployments.
+
 [**View Docker Deployment Guide →**](./docker-deployment)
 
 ### 🚀 Kubernetes Deployment
