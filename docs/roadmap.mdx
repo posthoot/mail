@@ -1,0 +1,65 @@
+---
+title: 'Project Roadmap'
+description: 'Upcoming milestones for AI features and the Automation Builder'
+---
+
+# Project Roadmap
+
+This roadmap focuses on two pillars: AI‑assisted marketing and a visual Automation Builder. Timelines are indicative and may shift as we learn from users.
+
+## Phase 1 — Foundations (In Progress)
+
+### AI Building Blocks
+- Content helpers: subject line and preview text suggestions
+- Tone and length adjustments (shorten/expand, formal/casual)
+- Send‑time recommendations (per audience segment)
+- AI prompts library with safe defaults and guardrails
+
+### Automation Builder (MVP)
+- Visual canvas with nodes/edges (trigger, email, delay, decision)
+- Draft → validate → launch flow with versioning
+- Basic audience filters and goal tracking
+- Execution engine with retries and idempotency
+
+## Phase 2 — Optimization (Next)
+
+### AI Optimization Loops
+- Multi‑armed bandit for subject/content variants
+- Auto‑segmentation based on behavior and recency‑frequency‑monetary (RFM) signals
+- Automatic holdout groups and uplift measurement
+- Content linting (spam terms, broken links, image/text ratio)
+
+### Builder Enhancements
+- Branching by attributes (segment, tag, lifecycle stage)
+- Reusable subflows and templates
+- Real‑time run view (per‑node throughput, failures, dwell time)
+- Rollback and one‑click clone to new version
+
+## Phase 3 — Autonomy (Planned)
+
+### AI Agents
+- Goal‑based campaigns (e.g., “increase trial activations by 10%”)
+- Continuous learning from cohort outcomes
+- Anomaly detection (deliverability, bounce spikes, blocklists)
+- Smart throttling across providers to protect reputation
+
+### Builder at Scale
+- Multi‑workspace libraries with permissions
+- Programmatic flow APIs + import/export (JSON)
+- Canary launches and staged rollouts
+- Cross‑channel hooks (webhooks to SMS/CRM/ads)
+
+## Technical Notes
+
+- Privacy: opt‑in usage analytics; redact PII before model prompts
+- Safety: rate limits, circuit breakers, and guardrails on AI actions
+- Observability: per‑variant metrics with confidence intervals
+- Extensibility: provider‑agnostic interfaces for LLMs and SMTP
+
+## How to Influence the Roadmap
+
+- Open a discussion: https://github.com/posthoot/mail/discussions
+- File an issue/feature: https://github.com/posthoot/mail/issues
+- Join Slack: https://posthoot.com/slack
+
+We prioritize roadmap items that clearly improve outcomes (opens, clicks, activations) while preserving privacy and reliability.
