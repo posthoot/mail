@@ -90,7 +90,7 @@
       },
       {
         "tab": "API Reference",
-        "openapi": "https://api.posthoot.com/openapi.json",
+        "openapi": "../server/openapi.json",
         "groups": [
           {
             "group": "Analytics",
@@ -239,7 +239,7 @@
     "dark": "/logo/dark.svg",
     "href": "https://posthoot.com"
   },
-  "openapi": "https://api.posthoot.com/openapi.json",
+  "openapi": "../server/openapi.json",
   "api": {
     "mdx": {
       "server": ["https://api.posthoot.com"]
