@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Posthoot",
   "colors": {
-    "primary": "#26272b",
-    "light": "#97b31d",
-    "dark": "#A1B659"
+    "primary": "#F08787",
+    "light": "#FFB3B3",
+    "dark": "#D66767"
   },
   "styling": {
     "codeblocks": "dark"
@@ -92,6 +92,15 @@
               "guides/quickstart",
               "guides/self-hosting",
               "guides/contributing"
+            ]
+          },
+          {
+            "group": "Self-Hosting",
+            "pages": [
+              "guides/self-hosting",
+              "guides/kubernetes-deployment",
+              "guides/docker-deployment",
+              "guides/systemd-deployment"
             ]
           },
           {

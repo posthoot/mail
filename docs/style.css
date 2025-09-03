@@ -4,8 +4,8 @@
 
 #navbar .max-w-8xl {
     max-width: 100%;
-    border-bottom: 1px solid #ebebeb;
-    background-color: #F4F3EF;
+    border-bottom: 1px solid #F08787;
+    background-color: #F8E5E5;
 }
 
 .max-w-8xl {
@@ -16,9 +16,9 @@
     left: 0;
     padding-right: 30px;
     border-right: 1px;
-    border-color: #cdd64b;
-    background-color: #F4F3EF;
-    border-right: 1px solid #ebebeb;
+    border-color: #F08787;
+    background-color: #F8E5E5;
+    border-right: 1px solid #F08787;
 }
 
 #sidebar-content {
@@ -34,8 +34,8 @@
 }
 
 #sidebar li>a.text-primary {
-    background-color: #FBFFCC;
-    border-left: 4px solid #EFFF33;
+    background-color: #FFE5E5;
+    border-left: 4px solid #F08787;
     padding: 5px;
 }
 
@@ -59,25 +59,25 @@
   } */
 
 #header {
-    border-left: 4px solid #EFFF33;
+    border-left: 4px solid #F08787;
     padding-left: 16px;
     padding-right: 16px;
-    background-color: #FDFFE5;
+    background-color: #FDF0F0;
     padding-bottom: 10px;
     padding-top: 10px;
 }
 
 #content-area .mt-8 .block {
     border-width: 1px;
-    background-color: #FCFBFA;
-    border-color: #ebebeb;
+    background-color: #FCF7F7;
+    border-color: #F08787;
 }
 
 /* #content-area:hover .mt-8 .block:hover{
     
     border-width: 1px;
-    background-color: #FDFFE5;
-    border-color: #EFFF33;
+    background-color: #FDF0F0;
+    border-color: #F08787;
   } */
 
 #content-area div.my-4 {
@@ -101,7 +101,7 @@
 }
 
 #topbar-cta-button .group .absolute {
-    background-color: black;
+    background-color: #8B3A3A;
     border-radius: 0px;
 }
 
