@@ -90,6 +90,7 @@
       },
       {
         "tab": "API Reference",
+        "openapi": "https://api.posthoot.com/openapi.json",
         "groups": [
           {
             "group": "Analytics",
