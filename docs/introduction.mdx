@@ -1,48 +1,91 @@
 ---
 title: 'Introduction'
-description: 'Welcome to the Posthoot API documentation'
+description: 'Welcome to the Posthoot documentation'
 ---
 
 # Welcome to Posthoot API
 
-Posthoot is a robust Go-based backend service for email campaign management with advanced authentication and permission systems. This API provides comprehensive functionality for managing email campaigns, analytics, user management, and more.
+Posthoot is an **open-source email marketing engine** that gives you complete control over your email infrastructure. Built with Go and designed for scale, Posthoot connects to multiple SMTP providers, provides advanced template management, brings AI into your workflows, and enables marketing campaigns to run on autopilot.
+
+## 🎯 What is Posthoot?
+
+Posthoot is more than just an email API - it's a complete email marketing platform that you control. Unlike traditional email services that lock you into their ecosystem, Posthoot is:
+
+- **🔓 Open Source**: Full transparency and complete customization
+- **🔌 Multi-Provider**: Connect to any SMTP provider (SendGrid, Mailgun, Amazon SES, etc.)
+- **🤖 AI-Powered**: Intelligent automation and optimization
+- **🚀 Self-Hosted**: Complete control over your data and infrastructure
+- **💰 Cost-Effective**: No vendor lock-in or hidden fees
 
 ## 🚀 Key Features
 
-### 🔐 Authentication System
-- JWT-based authentication with refresh tokens
-- Role-based access control (RBAC)
-- Password reset functionality with time-limited codes
-- Support for API keys with granular permissions
-- Google OAuth integration
+### 🔌 Multi-Provider SMTP Engine
+- **Connect to Any Provider**: SendGrid, Mailgun, Amazon SES, Postmark, and more
+- **Smart Routing**: Automatically route emails through the most cost-effective provider
+- **Failover Support**: Automatic failover between providers for reliability
+- **Provider Analytics**: Compare performance across different providers
 
-### 📊 Analytics & Tracking
-- Comprehensive email analytics
-- Click and open tracking
-- Audience insights and segmentation
-- Campaign performance metrics
-- Geographic and device analytics
+### 🎨 Advanced Template Management
+- **Custom HTML/CSS**: Complete design freedom with custom templates
+- **Dynamic Content**: Real-time personalization and dynamic content
+- **A/B Testing**: Built-in testing framework for optimization
+- **Responsive Design**: Mobile-first email templates
+- **Template Library**: Reusable template components
 
-### 🎯 Campaign Management
-- Create, read, update, delete campaigns
-- Campaign scheduling and automation
-- Template management
-- Contact list management
+### 🤖 AI-Powered Automation
+- **Predictive Analytics**: Forecast campaign performance and engagement
+- **Smart Segmentation**: AI-driven audience targeting and segmentation
+- **Content Optimization**: Automated subject line and content suggestions
+- **Send Time Optimization**: AI-recommended optimal send times
+- **Automated A/B Testing**: Continuous optimization of campaigns
 
-### 💳 Subscription System
-- Integration with Dodo Payments
-- Feature-based access control
-- Subscription management portal
-- Webhook support for payment events
+### 📊 Comprehensive Analytics
+- **Real-time Tracking**: Live email open, click, and conversion tracking
+- **Advanced Metrics**: Engagement rates, bounce analysis, and deliverability
+- **Audience Insights**: Geographic, device, and behavioral analytics
+- **Campaign Performance**: Detailed campaign comparison and ROI analysis
+- **Custom Dashboards**: Build custom analytics dashboards
+
+### 🔐 Enterprise Security
+- **JWT Authentication**: Secure token-based authentication with refresh tokens
+- **Role-Based Access Control**: Granular permissions and team management
+- **API Key Management**: Secure API key generation and management
+- **Audit Logging**: Complete audit trail for compliance
+- **GDPR Compliance**: Built-in privacy and data protection features
+
+### 🚀 Campaign Automation
+- **Multi-Step Sequences**: Complex email workflows and drip campaigns
+- **Behavioral Triggers**: Action-based automation and personalization
+- **Goal Tracking**: Conversion tracking and success metrics
+- **Smart Limits**: Prevent email fatigue with intelligent throttling
+- **Performance Optimization**: Continuous campaign improvement
 
 ## 🛠️ Technology Stack
 
-- **Backend**: Go 1.21+
-- **Database**: PostgreSQL 14+
-- **Cache**: Redis
-- **Authentication**: JWT + Firebase
-- **Payments**: Dodo Payments
-- **Documentation**: Swagger/OpenAPI
+### Backend & Infrastructure
+- **Backend**: Go 1.21+ (high-performance, concurrent)
+- **Database**: PostgreSQL 14+ (reliable, ACID-compliant)
+- **Cache**: Redis (fast, distributed caching)
+- **Queue System**: Redis-based job queues for email processing
+- **File Storage**: Local storage with cloud provider support
+
+### Authentication & Security
+- **Authentication**: JWT + Firebase OAuth
+- **Rate Limiting**: Redis-based distributed rate limiting
+- **Encryption**: TLS/SSL for all communications
+- **API Security**: CORS protection and secure headers
+
+### Email Infrastructure
+- **SMTP Providers**: Multi-provider support (SendGrid, Mailgun, Amazon SES, etc.)
+- **Email Processing**: Asynchronous email processing with retry logic
+- **Tracking**: Pixel-based open tracking and link click tracking
+- **Bounce Handling**: Automatic bounce processing and list cleaning
+
+### Development & Documentation
+- **API Documentation**: Swagger/OpenAPI 3.0
+- **Testing**: Comprehensive test suite with Go testing
+- **CI/CD**: GitHub Actions for automated testing and deployment
+- **Monitoring**: Built-in logging and metrics collection
 
 ## 🔗 Base URL
 
@@ -52,50 +95,114 @@ https://api.posthoot.com
 
 ## 📋 Prerequisites
 
-- Go 1.21 or higher
-- PostgreSQL 14 or higher
-- Redis (for rate limiting and caching)
+### For API Usage
+- **API Access**: Valid Posthoot account and API credentials
+- **HTTP Client**: Any HTTP client (curl, Postman, SDK, etc.)
+- **Authentication**: JWT token for authenticated endpoints
+
+### For Self-Hosting
+- **Go**: 1.21 or higher
+- **PostgreSQL**: 14 or higher
+- **Redis**: 6.0 or higher (for rate limiting and caching)
+- **Docker**: Optional, for containerized deployment
+- **SMTP Provider**: At least one SMTP provider configured
 
 ## 🚀 Quick Start
 
-1. **Register a new account**
-   ```bash
-   curl -X POST https://api.posthoot.com/auth/register \
-     -H "Content-Type: application/json" \
-     -d '{
-       "email": "user@example.com",
-       "password": "secure_password",
-       "first_name": "John",
-       "last_name": "Doe"
-     }'
-   ```
+### 1. Create Your First Campaign
 
-2. **Login to get access token**
-   ```bash
-   curl -X POST https://api.posthoot.com/auth/login \
-     -H "Content-Type: application/json" \
-     -d '{
-       "email": "user@example.com",
-       "password": "secure_password"
-     }'
-   ```
+```bash
+# Register a new account
+curl -X POST https://api.posthoot.com/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "secure_password",
+    "first_name": "John",
+    "last_name": "Doe"
+  }'
 
-3. **Use the API with your token**
-   ```bash
-   curl -X GET https://api.posthoot.com/auth/me \
-     -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
-   ```
+# Login to get access token
+curl -X POST https://api.posthoot.com/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "secure_password"
+  }'
+```
+
+### 2. Configure SMTP Provider
+
+```bash
+# Add your SMTP provider
+curl -X POST https://api.posthoot.com/smtp \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "SendGrid",
+    "host": "smtp.sendgrid.net",
+    "port": 587,
+    "username": "apikey",
+    "password": "YOUR_SENDGRID_API_KEY"
+  }'
+```
+
+### 3. Send Your First Email
+
+```bash
+# Send a test email
+curl -X POST https://api.posthoot.com/email \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "recipient@example.com",
+    "subject": "Welcome to Posthoot!",
+    "html": "<h1>Hello from Posthoot!</h1><p>This is your first email.</p>",
+    "from": "sender@yourdomain.com"
+  }'
+```
+
+### 4. Check Analytics
+
+```bash
+# Get email analytics
+curl -X GET https://api.posthoot.com/analytics/email \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
 
 ## 📚 What's Next?
 
+### Core Concepts
+- [Vision](/vision) - Understand the project's mission and goals
 - [Authentication](/authentication) - Learn about JWT tokens and authentication flows
 - [Rate Limiting](/rate-limiting) - Understand API rate limits and best practices
 - [Error Handling](/errors) - Learn how to handle API errors properly
+
+### Getting Started
 - [Quickstart Guide](/guides/quickstart) - Follow a step-by-step tutorial
+- [Self-Hosting](/guides/self-hosting) - Deploy your own Posthoot instance
+- [SMTP Configuration](/guides/smtp-setup) - Configure your email providers
+
+### Advanced Features
+- [Campaign Management](/guides/campaigns) - Create and manage email campaigns
+- [Template System](/guides/templates) - Build custom email templates
+- [Analytics & Tracking](/guides/analytics) - Monitor email performance
+- [Automation](/guides/automation) - Set up automated email workflows
 
 ## 🆘 Need Help?
 
-- **Documentation**: Browse our comprehensive API docs
-- **Support**: Join our [Slack community](https://posthoot.com/slack)
-- **Email**: Contact us at [team@posthoot.com](mailto:team@posthoot.com)
-- **GitHub**: Check out our [open source projects](https://github.com/posthoot)
+### Community & Support
+- **📚 Documentation**: Browse our comprehensive API docs
+- **💬 Community**: Join our [Slack community](https://posthoot.com/slack)
+- **🐛 Issues**: Report bugs on [GitHub](https://github.com/posthoot/mail/issues)
+- **💡 Feature Requests**: Suggest new features on [GitHub](https://github.com/posthoot/mail/discussions)
+
+### Contact Us
+- **📧 General**: [team@posthoot.com](mailto:team@posthoot.com)
+- **🛠️ Technical Support**: [support@posthoot.com](mailto:support@posthoot.com)
+- **💰 Sales**: [sales@posthoot.com](mailto:sales@posthoot.com)
+
+### Open Source
+- **📦 Source Code**: [GitHub Repository](https://github.com/posthoot/mail)
+- **🤝 Contributing**: [Contributing Guide](https://github.com/posthoot/mail/blob/main/CONTRIBUTING.md)
+- **⭐ Star Us**: Show your support by starring our repository

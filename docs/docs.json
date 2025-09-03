@@ -19,6 +19,7 @@
           {
             "group": "Getting Started",
             "pages": [
+              "vision",
               "introduction",
               "authentication",
               "rate-limiting",
