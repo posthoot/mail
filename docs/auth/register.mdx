@@ -1,0 +1,186 @@
+---
+title: 'Register User'
+description: 'Create a new user account'
+---
+
+# Register User
+
+Create a new user account with email, password, and name details.
+
+## 📝 Endpoint
+
+```http
+POST /auth/register
+```
+
+## 📋 Request Body
+
+<ParamField body="email" type="string" required>
+The user's email address. Must be a valid email format.
+</ParamField>
+
+<ParamField body="password" type="string" required>
+The user's password. Must be at least 8 characters long.
+</ParamField>
+
+<ParamField body="first_name" type="string" required>
+The user's first name.
+</ParamField>
+
+<ParamField body="last_name" type="string" required>
+The user's last name.
+</ParamField>
+
+## 📤 Request Example
+
+```bash
+curl -X POST https://api.posthoot.com/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john.doe@example.com",
+    "password": "secure_password123",
+    "first_name": "John",
+    "last_name": "Doe"
+  }'
+```
+
+```javascript
+const response = await fetch('https://api.posthoot.com/auth/register', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    email: 'john.doe@example.com',
+    password: 'secure_password123',
+    first_name: 'John',
+    last_name: 'Doe'
+  })
+});
+
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.post(
+    'https://api.posthoot.com/auth/register',
+    json={
+        'email': 'john.doe@example.com',
+        'password': 'secure_password123',
+        'first_name': 'John',
+        'last_name': 'Doe'
+    }
+)
+
+data = response.json()
+```
+
+## 📥 Response
+
+### Success (201 Created)
+
+```json
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "user_123",
+    "email": "john.doe@example.com",
+    "first_name": "John",
+    "last_name": "Doe",
+    "role": "ADMIN",
+    "team_id": "team_456",
+    "created_at": "2024-01-01T00:00:00Z"
+  },
+  "team": {
+    "id": "team_456",
+    "name": "John's Team",
+    "created_at": "2024-01-01T00:00:00Z"
+  }
+}
+```
+
+### Error Responses
+
+#### Email Already Exists (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Email already exists",
+  "code": "EMAIL_EXISTS"
+}
+```
+
+#### Invalid Email Format (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Invalid email format",
+  "details": {
+    "email": "Invalid email format"
+  },
+  "code": "VALIDATION_ERROR"
+}
+```
+
+#### Password Too Short (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Password must be at least 8 characters",
+  "details": {
+    "password": "Password must be at least 8 characters"
+  },
+  "code": "VALIDATION_ERROR"
+}
+```
+
+## 🔐 What Happens After Registration
+
+1. **Team Creation**: A new team is automatically created for the user
+2. **Role Assignment**: User is assigned the `ADMIN` role for their team
+3. **Default Permissions**: User receives default permissions for their role
+4. **Token Generation**: Access and refresh tokens are generated
+5. **Welcome Email**: A welcome email is sent to the user
+
+## 🛡️ Security Features
+
+- **Password Hashing**: Passwords are hashed using bcrypt
+- **Email Verification**: Email format is validated
+- **Rate Limiting**: Registration is rate-limited to prevent abuse
+- **Team Isolation**: Each user gets their own team by default
+
+## 📋 Validation Rules
+
+### Email
+- Must be a valid email format
+- Must be unique across the system
+- Maximum length: 255 characters
+
+### Password
+- Minimum length: 8 characters
+- Should contain a mix of letters, numbers, and symbols
+- Cannot be a common password
+
+### Names
+- Minimum length: 2 characters
+- Maximum length: 50 characters
+- Can contain letters, spaces, hyphens, and apostrophes
+
+## 🔄 Next Steps
+
+After successful registration:
+
+1. **Store tokens securely** in your application
+2. **Use the access token** for API requests
+3. **Implement token refresh** when the access token expires
+4. **Set up team settings** in the dashboard
+
+## 📚 Related Endpoints
+
+- [Login](/auth/login) - Authenticate existing user
+- [Google OAuth](/auth/google) - Register with Google
+- [Password Reset](/auth/password-reset) - Reset forgotten password
+- [Get Current User](/users/me) - Get user details

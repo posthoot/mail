@@ -1,0 +1,366 @@
+---
+title: 'Create Subscription'
+description: 'Create a new subscription and redirect to payment'
+---
+
+# Create Subscription
+
+Create a pending subscription and redirect the user to the payment page. This endpoint integrates with Dodo Payments to handle the payment process.
+
+## 📝 Endpoint
+
+```http
+POST /subscriptions
+```
+
+## 📋 Request Body
+
+<ParamField body="email" type="string" required>
+The email address for the subscription. This will be used to link the subscription to the user's account.
+</ParamField>
+
+<ParamField body="product_id" type="string" required>
+The ID of the product/plan to subscribe to.
+</ParamField>
+
+## 📤 Request Example
+
+```bash
+curl -X POST https://api.posthoot.com/subscriptions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "product_id": "pro_monthly"
+  }'
+```
+
+```javascript
+const response = await fetch('https://api.posthoot.com/subscriptions', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    product_id: 'pro_monthly'
+  })
+});
+
+const data = await response.json();
+```
+
+```python
+import requests
+
+response = requests.post(
+    'https://api.posthoot.com/subscriptions',
+    json={
+        'email': 'user@example.com',
+        'product_id': 'pro_monthly'
+    }
+)
+
+data = response.json()
+```
+
+## 📥 Response
+
+### Success (200 OK)
+
+```json
+{
+  "payment_url": "https://pay.dodo.com/checkout/session_abc123",
+  "subscription_id": "sub_456",
+  "customer_id": "cus_789",
+  "status": "pending",
+  "expires_at": "2024-01-01T11:00:00Z"
+}
+```
+
+### Error Responses
+
+#### Invalid Product (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Invalid product ID",
+  "code": "INVALID_PRODUCT"
+}
+```
+
+#### Invalid Email (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Invalid email format",
+  "code": "INVALID_EMAIL"
+}
+```
+
+#### Payment Error (500 Internal Server Error)
+```json
+{
+  "error": "payment_error",
+  "message": "Failed to create payment session",
+  "code": "PAYMENT_ERROR"
+}
+```
+
+## 🔄 Subscription Flow
+
+### 1. Create Subscription
+```javascript
+// Step 1: Create subscription
+const subscriptionResponse = await fetch('/subscriptions', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    product_id: 'pro_monthly'
+  })
+});
+
+const subscription = await subscriptionResponse.json();
+```
+
+### 2. Redirect to Payment
+```javascript
+// Step 2: Redirect user to payment page
+window.location.href = subscription.payment_url;
+```
+
+### 3. Handle Payment Completion
+```javascript
+// Step 3: User completes payment and returns
+// The subscription will be automatically activated via webhook
+```
+
+### 4. Link to Account
+```javascript
+// Step 4: When user registers/logs in, subscription is linked
+const loginResponse = await fetch('/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    email: 'user@example.com',
+    password: 'password123'
+  })
+});
+
+const loginData = await loginResponse.json();
+// Subscription is automatically linked to the user's team
+```
+
+## 💳 Available Products
+
+### Pro Monthly
+```json
+{
+  "id": "pro_monthly",
+  "name": "Pro Plan",
+  "price": 29.99,
+  "interval": "monthly",
+  "features": [
+    "email_campaigns",
+    "template_library",
+    "basic_analytics",
+    "contact_management"
+  ]
+}
+```
+
+### Pro Yearly
+```json
+{
+  "id": "pro_yearly",
+  "name": "Pro Plan (Yearly)",
+  "price": 299.99,
+  "interval": "yearly",
+  "features": [
+    "email_campaigns",
+    "template_library",
+    "basic_analytics",
+    "contact_management"
+  ],
+  "discount": "17%"
+}
+```
+
+### Enterprise
+```json
+{
+  "id": "enterprise",
+  "name": "Enterprise Plan",
+  "price": 99.99,
+  "interval": "monthly",
+  "features": [
+    "email_campaigns",
+    "template_library",
+    "advanced_analytics",
+    "contact_management",
+    "automation",
+    "api_access",
+    "priority_support"
+  ]
+}
+```
+
+## 🔐 Security Features
+
+### Payment Security
+- **PCI Compliance**: All payments processed through Dodo Payments
+- **Encryption**: Payment data encrypted in transit and at rest
+- **Tokenization**: Sensitive data tokenized for security
+
+### Subscription Security
+- **Email Verification**: Subscription linked to verified email
+- **Session Expiration**: Payment sessions expire after 1 hour
+- **Fraud Protection**: Advanced fraud detection systems
+
+## 📊 Subscription States
+
+### Pending
+- Payment session created
+- Waiting for user to complete payment
+- Expires after 1 hour
+
+### Active
+- Payment completed successfully
+- Features enabled for the team
+- Billing cycle started
+
+### Canceled
+- Subscription canceled by user
+- Features disabled at end of billing period
+- No further charges
+
+### Paused
+- Payment failed or paused
+- Features temporarily disabled
+- Retry payment to reactivate
+
+## 🛠️ Implementation Examples
+
+### React Component
+```jsx
+import React, { useState } from 'react';
+
+function SubscriptionForm() {
+  const [email, setEmail] = useState('');
+  const [productId, setProductId] = useState('pro_monthly');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch('/subscriptions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, product_id: productId })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        window.location.href = data.payment_url;
+      } else {
+        const error = await response.json();
+        alert(error.message);
+      }
+    } catch (error) {
+      alert('Failed to create subscription');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Enter your email"
+        required
+      />
+      
+      <select value={productId} onChange={(e) => setProductId(e.target.value)}>
+        <option value="pro_monthly">Pro Monthly ($29.99)</option>
+        <option value="pro_yearly">Pro Yearly ($299.99)</option>
+        <option value="enterprise">Enterprise ($99.99)</option>
+      </select>
+      
+      <button type="submit" disabled={loading}>
+        {loading ? 'Creating...' : 'Subscribe Now'}
+      </button>
+    </form>
+  );
+}
+```
+
+### Node.js Server
+```javascript
+const express = require('express');
+const app = express();
+
+app.post('/subscriptions', async (req, res) => {
+  try {
+    const { email, product_id } = req.body;
+    
+    // Validate input
+    if (!email || !product_id) {
+      return res.status(400).json({
+        error: 'validation_error',
+        message: 'Email and product_id are required'
+      });
+    }
+    
+    // Create subscription via Posthoot API
+    const response = await fetch('https://api.posthoot.com/subscriptions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, product_id })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok) {
+      res.json(data);
+    } else {
+      res.status(response.status).json(data);
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: 'server_error',
+      message: 'Failed to create subscription'
+    });
+  }
+});
+```
+
+## 🔄 Webhook Integration
+
+### Payment Success Webhook
+```javascript
+app.post('/webhook/payment-success', (req, res) => {
+  const { subscription_id, customer_id, status } = req.body;
+  
+  if (status === 'active') {
+    // Update subscription status in your database
+    updateSubscriptionStatus(subscription_id, 'active');
+    
+    // Send welcome email
+    sendWelcomeEmail(customer_id);
+  }
+  
+  res.status(200).send('OK');
+});
+```
+
+## 📚 Related Endpoints
+
+- [Subscription Features](/subscriptions/features) - Get enabled features
+- [Subscription Portal](/subscriptions/portal) - Manage subscription
+- [Subscription Webhook](/subscriptions/webhook) - Handle webhooks
+- [Authentication](/auth/login) - Link subscription to account

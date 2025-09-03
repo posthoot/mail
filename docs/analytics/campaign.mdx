@@ -1,0 +1,369 @@
+---
+title: 'Campaign Analytics'
+description: 'Get comprehensive analytics for a specific campaign'
+---
+
+# Campaign Analytics
+
+Retrieve detailed analytics and performance metrics for a specific email campaign.
+
+## 📝 Endpoint
+
+```http
+GET /api/v1/analytics/campaign
+```
+
+## 📋 Query Parameters
+
+<ParamField query="campaignId" type="string" required>
+The unique identifier of the campaign to analyze.
+</ParamField>
+
+## 📤 Request Example
+
+```bash
+curl -X GET "https://api.posthoot.com/api/v1/analytics/campaign?campaignId=campaign_123" \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
+```
+
+```javascript
+const response = await fetch(
+  'https://api.posthoot.com/api/v1/analytics/campaign?campaignId=campaign_123',
+  {
+    headers: {
+      'Authorization': 'Bearer YOUR_ACCESS_TOKEN'
+    }
+  }
+);
+
+const analytics = await response.json();
+```
+
+```python
+import requests
+
+response = requests.get(
+    'https://api.posthoot.com/api/v1/analytics/campaign',
+    params={'campaignId': 'campaign_123'},
+    headers={'Authorization': 'Bearer YOUR_ACCESS_TOKEN'}
+)
+
+analytics = response.json()
+```
+
+## 📥 Response
+
+### Success (200 OK)
+
+```json
+{
+  "openCount": 1250,
+  "openRate": 0.25,
+  "uniqueOpens": 1200,
+  "repeatOpens": 50,
+  "clickCount": 312,
+  "clickRate": 0.0624,
+  "uniqueClicks": 300,
+  "repeatClicks": 12,
+  "bounceCount": 25,
+  "complaintCount": 2,
+  "engagementScore": 0.85,
+  "industryAvgOpenRate": 0.22,
+  "industryAvgClickRate": 0.05,
+  "firstOpenTime": 3600000000,
+  "averageReadTime": 1800000000,
+  "timelineData": [
+    {
+      "timestamp": "2024-01-01T10:00:00Z",
+      "eventType": "open",
+      "count": 45,
+      "uniqueCount": 42,
+      "country": "US",
+      "city": "New York",
+      "deviceType": "desktop",
+      "browser": "Chrome"
+    }
+  ],
+  "geoBreakdown": {
+    "US": 800,
+    "CA": 200,
+    "UK": 150,
+    "AU": 100
+  },
+  "deviceBreakdown": {
+    "desktop": 750,
+    "mobile": 400,
+    "tablet": 100
+  },
+  "browserBreakdown": {
+    "Chrome": 600,
+    "Safari": 300,
+    "Firefox": 200,
+    "Edge": 150
+  },
+  "osBreakdown": {
+    "Windows": 500,
+    "macOS": 400,
+    "iOS": 200,
+    "Android": 150
+  },
+  "cityBreakdown": {
+    "New York": 150,
+    "Los Angeles": 120,
+    "Toronto": 80,
+    "London": 70
+  },
+  "regionBreakdown": {
+    "North America": 1000,
+    "Europe": 200,
+    "Asia": 50
+  },
+  "hourlyBreakdown": {
+    "9": 200,
+    "10": 300,
+    "11": 250,
+    "12": 150
+  },
+  "dayOfWeekBreakdown": {
+    "Monday": 300,
+    "Tuesday": 250,
+    "Wednesday": 200,
+    "Thursday": 150,
+    "Friday": 100
+  },
+  "clickedLinks": [
+    {
+      "url": "https://example.com/product",
+      "clickCount": 150,
+      "uniqueClicks": 145,
+      "clickRate": 0.03,
+      "averageTimeToClick": 3000000000,
+      "firstClickTime": "2024-01-01T10:15:00Z",
+      "lastClickTime": "2024-01-01T18:30:00Z",
+      "deviceBreakdown": {
+        "desktop": 100,
+        "mobile": 45
+      }
+    }
+  ]
+}
+```
+
+### Error Responses
+
+#### Campaign Not Found (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Campaign not found",
+  "code": "CAMPAIGN_NOT_FOUND"
+}
+```
+
+#### Missing Campaign ID (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Campaign ID is required",
+  "code": "MISSING_CAMPAIGN_ID"
+}
+```
+
+#### Insufficient Permissions (403 Forbidden)
+```json
+{
+  "error": "forbidden",
+  "message": "Insufficient permissions to access this campaign",
+  "code": "INSUFFICIENT_PERMISSIONS"
+}
+```
+
+## 📊 Analytics Metrics Explained
+
+### Basic Metrics
+- **openCount**: Total number of email opens
+- **openRate**: Percentage of emails opened (opens / sent)
+- **uniqueOpens**: Number of unique recipients who opened
+- **repeatOpens**: Number of times the same recipient opened
+- **clickCount**: Total number of link clicks
+- **clickRate**: Percentage of emails with clicks (clicks / sent)
+- **uniqueClicks**: Number of unique recipients who clicked
+- **repeatClicks**: Number of times the same recipient clicked
+
+### Engagement Metrics
+- **engagementScore**: Overall engagement score (0-1)
+- **bounceCount**: Number of bounced emails
+- **complaintCount**: Number of spam complaints
+- **firstOpenTime**: Time to first open (in nanoseconds)
+- **averageReadTime**: Average time between open and click
+
+### Comparative Metrics
+- **industryAvgOpenRate**: Industry average open rate
+- **industryAvgClickRate**: Industry average click rate
+
+### Geographic Analytics
+- **geoBreakdown**: Opens by country
+- **cityBreakdown**: Opens by city
+- **regionBreakdown**: Opens by region
+
+### Device & Browser Analytics
+- **deviceBreakdown**: Opens by device type
+- **browserBreakdown**: Opens by browser
+- **osBreakdown**: Opens by operating system
+
+### Time-based Analytics
+- **hourlyBreakdown**: Opens by hour (0-23)
+- **dayOfWeekBreakdown**: Opens by day of week
+- **timelineData**: Detailed timeline of events
+
+### Link Analytics
+- **clickedLinks**: Detailed analytics for each clicked link
+  - **url**: The clicked URL
+  - **clickCount**: Total clicks on this link
+  - **uniqueClicks**: Unique recipients who clicked
+  - **clickRate**: Click rate for this link
+  - **averageTimeToClick**: Average time to click
+  - **firstClickTime**: First click timestamp
+  - **lastClickTime**: Last click timestamp
+  - **deviceBreakdown**: Clicks by device type
+
+## 📈 Using Analytics Data
+
+### Calculate Performance Metrics
+```javascript
+function calculateMetrics(analytics) {
+  const {
+    openCount,
+    clickCount,
+    bounceCount,
+    complaintCount,
+    timelineData
+  } = analytics;
+
+  // Calculate delivery rate
+  const totalSent = timelineData.reduce((sum, event) => sum + event.count, 0);
+  const deliveryRate = ((totalSent - bounceCount) / totalSent) * 100;
+
+  // Calculate engagement rate
+  const engagementRate = ((openCount + clickCount) / totalSent) * 100;
+
+  // Calculate spam score
+  const spamScore = (complaintCount / totalSent) * 1000;
+
+  return {
+    deliveryRate: deliveryRate.toFixed(2) + '%',
+    engagementRate: engagementRate.toFixed(2) + '%',
+    spamScore: spamScore.toFixed(2)
+  };
+}
+```
+
+### Create Visualizations
+```javascript
+function createCharts(analytics) {
+  // Geographic chart
+  const geoData = Object.entries(analytics.geoBreakdown).map(([country, count]) => ({
+    country,
+    opens: count
+  }));
+
+  // Device breakdown chart
+  const deviceData = Object.entries(analytics.deviceBreakdown).map(([device, count]) => ({
+    device,
+    opens: count
+  }));
+
+  // Timeline chart
+  const timelineData = analytics.timelineData.map(event => ({
+    time: new Date(event.timestamp),
+    opens: event.count,
+    clicks: event.eventType === 'click' ? event.count : 0
+  }));
+
+  return { geoData, deviceData, timelineData };
+}
+```
+
+### Monitor Performance
+```javascript
+function monitorPerformance(analytics) {
+  const {
+    openRate,
+    clickRate,
+    industryAvgOpenRate,
+    industryAvgClickRate,
+    engagementScore
+  } = analytics;
+
+  const alerts = [];
+
+  // Check if performance is below industry average
+  if (openRate < industryAvgOpenRate * 0.8) {
+    alerts.push('Open rate is significantly below industry average');
+  }
+
+  if (clickRate < industryAvgClickRate * 0.8) {
+    alerts.push('Click rate is significantly below industry average');
+  }
+
+  // Check engagement score
+  if (engagementScore < 0.5) {
+    alerts.push('Low engagement score detected');
+  }
+
+  return alerts;
+}
+```
+
+## 🔄 Real-time Updates
+
+### Polling for Updates
+```javascript
+async function pollAnalytics(campaignId, interval = 30000) {
+  const poll = async () => {
+    try {
+      const response = await fetch(
+        `/api/v1/analytics/campaign?campaignId=${campaignId}`,
+        {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }
+      );
+      
+      if (response.ok) {
+        const analytics = await response.json();
+        updateDashboard(analytics);
+      }
+    } catch (error) {
+      console.error('Analytics polling error:', error);
+    }
+  };
+
+  // Poll immediately
+  await poll();
+  
+  // Then poll at intervals
+  setInterval(poll, interval);
+}
+```
+
+### Webhook Integration
+```javascript
+// Set up webhook to receive real-time analytics updates
+app.post('/webhook/analytics', (req, res) => {
+  const { campaignId, eventType, data } = req.body;
+  
+  if (eventType === 'email_opened' || eventType === 'email_clicked') {
+    updateAnalyticsInRealTime(campaignId, data);
+  }
+  
+  res.status(200).send('OK');
+});
+```
+
+## 📚 Related Endpoints
+
+- [Email Analytics](/analytics/email) - Get analytics for specific emails
+- [Campaign Comparison](/analytics/campaign/compare) - Compare multiple campaigns
+- [Audience Analytics](/analytics/audience) - Get audience insights
+- [Team Overview](/analytics/team/overview) - Get team-wide analytics
+- [Export Analytics](/analytics/export/campaign) - Export campaign data

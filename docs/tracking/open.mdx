@@ -1,0 +1,219 @@
+---
+title: 'Open Tracking'
+description: 'Handle email open tracking'
+---
+
+# Open Tracking
+
+Handle email open tracking when recipients open emails. This endpoint is used internally by the Posthoot system to track email opens.
+
+## 📝 Endpoint
+
+```http
+GET /api/v1/t/open
+```
+
+## 📋 Query Parameters
+
+<ParamField query="token" type="string" required>
+The tracking token for the email. This token is embedded in the email HTML as a tracking pixel.
+</ParamField>
+
+## 📤 Request Example
+
+```bash
+curl -X GET "https://api.posthoot.com/api/v1/t/open?token=tracking_token_123"
+```
+
+## 📥 Response
+
+### Success (200 OK)
+
+```json
+{
+  "id": "tracking_123",
+  "emailId": "email_456",
+  "campaignId": "campaign_789",
+  "contactId": "contact_101",
+  "event": "open",
+  "timestamp": "2024-01-01T10:00:00Z",
+  "ipAddress": "192.168.1.1",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+  "country": "US",
+  "city": "New York",
+  "region": "NY",
+  "deviceType": "desktop",
+  "browser": "Chrome",
+  "os": "Windows",
+  "metadata": {}
+}
+```
+
+### Error Responses
+
+#### Invalid Token (401 Unauthorized)
+```json
+{
+  "error": "unauthorized",
+  "message": "Invalid tracking token",
+  "code": "INVALID_TOKEN"
+}
+```
+
+#### Missing Token (400 Bad Request)
+```json
+{
+  "error": "validation_error",
+  "message": "Token is required",
+  "code": "MISSING_TOKEN"
+}
+```
+
+## 🔍 How Open Tracking Works
+
+### 1. Email Generation
+When an email is sent, a tracking pixel is automatically embedded:
+
+```html
+<img src="https://api.posthoot.com/api/v1/t/open?token=abc123" 
+     width="1" height="1" style="display:none;" alt="" />
+```
+
+### 2. Email Opening
+When the recipient opens the email:
+- Email client loads the tracking pixel
+- Browser makes a GET request to the tracking URL
+- Posthoot records the open event
+
+### 3. Data Collection
+The system automatically collects:
+- **IP Address**: Recipient's IP address
+- **User Agent**: Browser and device information
+- **Geographic Data**: Country, city, region
+- **Device Information**: Device type, browser, OS
+- **Timestamp**: Exact time of open
+
+## 🛡️ Privacy Considerations
+
+### Data Minimization
+- Only essential tracking data is collected
+- IP addresses are anonymized after processing
+- No personal information is stored in tracking tokens
+
+### Compliance
+- GDPR compliant tracking
+- Opt-out mechanisms available
+- Clear privacy policy required
+
+### Security
+- Tracking tokens are cryptographically secure
+- Tokens expire after a reasonable time
+- Rate limiting prevents abuse
+
+## 📊 Tracking Data
+
+### Geographic Information
+- **Country**: ISO country code (e.g., "US", "CA")
+- **City**: City name (e.g., "New York", "Toronto")
+- **Region**: State/province (e.g., "NY", "ON")
+
+### Device Information
+- **Device Type**: "desktop", "mobile", "tablet", "other"
+- **Browser**: "Chrome", "Safari", "Firefox", "Edge"
+- **OS**: "Windows", "macOS", "iOS", "Android"
+
+### Timing Information
+- **Timestamp**: ISO 8601 format
+- **Timezone**: Automatically detected from IP
+
+## 🔧 Implementation Notes
+
+### Email Client Compatibility
+- **Gmail**: Blocks tracking pixels by default
+- **Outlook**: May block tracking pixels
+- **Apple Mail**: Blocks tracking pixels in some cases
+- **Thunderbird**: Generally allows tracking pixels
+
+### Fallback Tracking
+When tracking pixels are blocked, alternative methods are used:
+- Link tracking (clicks)
+- Engagement scoring based on other metrics
+- Time-based analysis
+
+### Rate Limiting
+- Tracking endpoints have rate limits
+- Prevents abuse and spam
+- Configurable per IP address
+
+## 📈 Analytics Integration
+
+### Real-time Updates
+Open events trigger real-time analytics updates:
+- Campaign open rates
+- Geographic breakdowns
+- Device statistics
+- Engagement scores
+
+### Webhook Notifications
+Open events can trigger webhooks:
+```json
+{
+  "event": "email.opened",
+  "data": {
+    "emailId": "email_123",
+    "campaignId": "campaign_456",
+    "recipient": "user@example.com",
+    "timestamp": "2024-01-01T10:00:00Z",
+    "location": {
+      "country": "US",
+      "city": "New York"
+    },
+    "device": {
+      "type": "desktop",
+      "browser": "Chrome"
+    }
+  }
+}
+```
+
+## 🚨 Error Handling
+
+### Handle Blocked Tracking
+```javascript
+// Check if tracking is blocked
+function isTrackingBlocked(analytics) {
+  return analytics.openCount === 0 && analytics.clickCount > 0;
+}
+
+// Use alternative metrics
+function getEngagementScore(analytics) {
+  if (isTrackingBlocked(analytics)) {
+    // Use click rate and other metrics
+    return analytics.clickRate * 2;
+  }
+  return analytics.engagementScore;
+}
+```
+
+### Graceful Degradation
+```javascript
+// Handle missing tracking data
+function processAnalytics(analytics) {
+  if (!analytics.openCount && analytics.clickCount) {
+    console.log('Open tracking may be blocked');
+    // Use alternative engagement metrics
+  }
+  
+  return {
+    ...analytics,
+    estimatedOpens: analytics.openCount || analytics.clickCount * 3
+  };
+}
+```
+
+## 📚 Related Endpoints
+
+- [Click Tracking](/tracking/click) - Handle email click tracking
+- [Email Analytics](/analytics/email) - Get email analytics
+- [Campaign Analytics](/analytics/campaign) - Get campaign analytics
+- [Webhooks](/guides/webhooks) - Set up real-time notifications

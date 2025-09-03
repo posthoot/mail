@@ -14,6 +14,97 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "authentication",
+              "rate-limiting",
+              "errors"
+            ]
+          },
+          {
+            "group": "Authentication",
+            "pages": [
+              "auth/register",
+              "auth/login",
+              "auth/google",
+              "auth/refresh",
+              "auth/password-reset",
+              "auth/invite"
+            ]
+          },
+          {
+            "group": "Analytics",
+            "pages": [
+              "analytics/campaign",
+              "analytics/email",
+              "analytics/audience",
+              "analytics/team",
+              "analytics/trends",
+              "analytics/heatmap",
+              "analytics/export"
+            ]
+          },
+          {
+            "group": "Email Tracking",
+            "pages": [
+              "tracking/open",
+              "tracking/click"
+            ]
+          },
+          {
+            "group": "Subscriptions",
+            "pages": [
+              "subscriptions/create",
+              "subscriptions/features",
+              "subscriptions/portal",
+              "subscriptions/webhook"
+            ]
+          },
+          {
+            "group": "File Management",
+            "pages": [
+              "files/upload"
+            ]
+          },
+          {
+            "group": "User Management",
+            "pages": [
+              "users/me",
+              "users/list",
+              "users/get",
+              "users/update",
+              "users/delete"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Tutorials",
+            "pages": [
+              "guides/quickstart",
+              "guides/authentication",
+              "guides/analytics",
+              "guides/webhooks"
+            ]
+          },
+          {
+            "group": "Examples",
+            "pages": [
+              "examples/nodejs",
+              "examples/python",
+              "examples/curl"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "Changelog",
         "groups": [
           {

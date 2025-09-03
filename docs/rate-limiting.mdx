@@ -1,0 +1,194 @@
+---
+title: 'Rate Limiting'
+description: 'Understand API rate limits and best practices'
+---
+
+# Rate Limiting
+
+Posthoot API implements rate limiting to ensure fair usage and protect against abuse. Rate limits are applied per IP address and API key.
+
+## 📊 Rate Limit Headers
+
+All API responses include rate limit headers:
+
+```http
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+```
+
+## 🔢 Default Limits
+
+### Authentication Endpoints
+- **Login**: 5 requests per minute per IP
+- **Register**: 3 requests per hour per IP
+- **Password Reset**: 3 requests per hour per IP
+
+### General API Endpoints
+- **Standard**: 1000 requests per hour per IP
+- **Analytics**: 100 requests per minute per IP
+- **File Upload**: 50 requests per hour per IP
+
+### API Key Limits
+- **Standard**: 10,000 requests per hour per API key
+- **Analytics**: 1,000 requests per minute per API key
+
+## 🚨 Rate Limit Exceeded
+
+When you exceed rate limits, you'll receive a `429 Too Many Requests` response:
+
+```json
+{
+  "error": "rate_limit_exceeded",
+  "message": "Rate limit exceeded. Try again in 60 seconds.",
+  "retry_after": 60
+}
+```
+
+## 🔄 Retry Strategy
+
+### Exponential Backoff
+Implement exponential backoff when hitting rate limits:
+
+```javascript
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+async function makeRequest() {
+  try {
+    return await apiCall();
+  } catch (error) {
+    if (error.status === 429) {
+      const retryAfter = error.headers['retry-after'] || 60;
+      await delay(retryAfter * 1000);
+      return makeRequest();
+    }
+    throw error;
+  }
+}
+```
+
+### Jitter
+Add random jitter to avoid thundering herd:
+
+```javascript
+const jitter = Math.random() * 1000; // 0-1000ms
+await delay(retryAfter * 1000 + jitter);
+```
+
+## 📈 Monitoring Usage
+
+### Check Current Usage
+Monitor your rate limit usage via response headers:
+
+```javascript
+const remaining = response.headers['x-ratelimit-remaining'];
+const limit = response.headers['x-ratelimit-limit'];
+const reset = response.headers['x-ratelimit-reset'];
+
+console.log(`Used ${limit - remaining}/${limit} requests`);
+console.log(`Resets at ${new Date(reset * 1000)}`);
+```
+
+### Usage Alerts
+Set up alerts when approaching limits:
+
+```javascript
+if (remaining < limit * 0.1) { // Less than 10% remaining
+  console.warn('Rate limit nearly exceeded!');
+}
+```
+
+## 🛡️ Best Practices
+
+### 1. Implement Caching
+```javascript
+// Cache responses to reduce API calls
+const cache = new Map();
+const cacheKey = `${endpoint}-${params}`;
+
+if (cache.has(cacheKey)) {
+  return cache.get(cacheKey);
+}
+
+const response = await apiCall();
+cache.set(cacheKey, response);
+```
+
+### 2. Batch Requests
+```javascript
+// Instead of multiple single requests
+const promises = items.map(item => apiCall(item));
+
+// Batch them together
+const batchResponse = await batchApiCall(items);
+```
+
+### 3. Use Webhooks
+```javascript
+// Instead of polling, use webhooks
+app.post('/webhook', (req, res) => {
+  // Handle real-time updates
+  res.status(200).send('OK');
+});
+```
+
+### 4. Optimize Request Frequency
+```javascript
+// Use appropriate intervals
+const interval = 60000; // 1 minute for analytics
+setInterval(async () => {
+  await fetchAnalytics();
+}, interval);
+```
+
+## 🔧 Custom Limits
+
+### Enterprise Plans
+Enterprise customers can request custom rate limits:
+
+- Higher limits for specific endpoints
+- Custom burst allowances
+- Priority queuing
+
+### Contact Support
+Email [team@posthoot.com](mailto:team@posthoot.com) to discuss custom rate limits.
+
+## 📊 Rate Limit Analytics
+
+### Dashboard
+Monitor your API usage in the Posthoot dashboard:
+
+- Real-time request counts
+- Rate limit history
+- Usage trends
+- Alert configuration
+
+### API Usage Endpoint
+```bash
+curl -X GET https://api.posthoot.com/usage \
+  -H "Authorization: Bearer YOUR_TOKEN"
+```
+
+## 🚀 Optimization Tips
+
+1. **Use Connection Pooling**
+   - Reuse HTTP connections
+   - Reduce connection overhead
+
+2. **Implement Request Queuing**
+   - Queue requests when near limits
+   - Process in background
+
+3. **Cache Aggressively**
+   - Cache static data
+   - Use ETags for conditional requests
+
+4. **Monitor Performance**
+   - Track response times
+   - Identify slow endpoints
+
+## 📚 Related Topics
+
+- [Error Handling](/errors) - Handle rate limit errors gracefully
+- [Authentication](/authentication) - Understand API key limits
+- [Webhooks](/guides/webhooks) - Use webhooks to reduce polling
