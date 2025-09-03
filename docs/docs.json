@@ -238,7 +238,7 @@
     "dark": "/logo/dark.svg",
     "href": "https://posthoot.com"
   },
-  "openapi": "./server/openapi.json",
+  "openapi": "https://api.posthoot.com/openapi.json",
   "api": {
     "mdx": {
       "server": ["https://api.posthoot.com"]
