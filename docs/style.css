@@ -35,7 +35,7 @@
 
 #sidebar li>a.text-primary {
     background-color: #FFE5E5;
-    border-left: 4px solid #7f7f7f;
+    border-left: 4px solid #f08787;
     padding: 5px;
 }
 
@@ -59,7 +59,7 @@
   } */
 
 #header {
-    border-left: 4px solid #7f7f7f;
+    border-left: 4px solid #f08787;
     padding-left: 16px;
     padding-right: 16px;
     background-color: #FDF0F0;
