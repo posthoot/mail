@@ -262,12 +262,12 @@
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg",
-    "href": "https://posthoot.com"
+    "href": "https://xem.email"
   },
   "api": {
-    "openapi": "https://api.posthoot.com/openapi.json",
+    "openapi": "https://api.xem.email/openapi.json",
     "mdx": {
-      "server": ["https://api.posthoot.com"]
+      "server": ["https://api.xem.email"]
     }
   },
   "appearance": {
@@ -284,21 +284,21 @@
     "links": [
       {
         "label": "Log In",
-        "href": "https://office.posthoot.com/auth/login"
+        "href": "https://office.xem.email/auth/login"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Start for Free",
-      "href": "https://office.posthoot.com/auth/register"
+      "href": "https://office.xem.email/auth/register"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://www.twitter.com/posthoot/",
-      "linkedin": "https://www.linkedin.com/company/posthoot/",
-      "github": "https://github.com/posthoot/mail",
-      "slack": "https://posthoot.com/slack"
+      "x": "https://www.twitter.com/mailxem/",
+      "linkedin": "https://www.linkedin.com/company/mailxem/",
+      "github": "https://github.com/mailxem/mail",
+      "slack": "https://xem.email/slack"
     },
     "links": [
       {
@@ -306,15 +306,15 @@
         "items": [
           {
             "label": "Mail",
-            "href": "https://posthoot.com/"
+            "href": "https://xem.email/"
           },
           {
             "label": "Pricing",
-            "href": "https://posthoot.com#pricing"
+            "href": "https://xem.email#pricing"
           },
           {
             "label": "Blog",
-            "href": "https://posthoot.com/blog"
+            "href": "https://xem.email/blog"
           }
         ]
       },
@@ -323,11 +323,11 @@
         "items": [
           {
             "label": "Changelog",
-            "href": "https://docs.posthoot.com/changelog"
+            "href": "https://docs.xem.email/changelog"
           },
           {
             "label": "How to contribute",
-            "href": "https://docs.posthoot.com/heroes"
+            "href": "https://docs.xem.email/heroes"
           }
         ]
       },
@@ -336,23 +336,23 @@
         "items": [
           {
             "label": "Terms of Service",
-            "href": "https://infisical.com/terms"
+            "href": "https://xem.email/terms"
           },
           {
             "label": "Privacy Policy",
-            "href": "https://infisical.com/privacy"
+            "href": "https://xem.email/privacy"
           },
           {
             "label": "Team Email",
-            "href": "mailto:team@posthoot.com"
+            "href": "mailto:team@xem.email"
           },
           {
             "label": "Sales",
-            "href": "mailto:sales@posthoot.com"
+            "href": "mailto:sales@xem.email"
           },
           {
             "label": "Support",
-            "href": "https://posthoot.com/slack"
+            "href": "https://xem.email/slack"
           }
         ]
       }
