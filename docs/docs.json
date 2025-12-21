@@ -10,7 +10,7 @@
   "styling": {
     "codeblocks": "dark"
   },
-  "favicon": "./favicon.ico",
+  "favicon": "https://app.xem.email/favicon.ico",
   "navigation": {
     "tabs": [
       {
@@ -260,8 +260,8 @@
     ]
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg",
+    "light": "https://framerusercontent.com/images/jsPyKWn60OKS9FxqTFddWtlsJBg.png?width=249&height=102",
+    "dark": "https://framerusercontent.com/images/jsPyKWn60OKS9FxqTFddWtlsJBg.png?width=249&height=102",
     "href": "https://xem.email"
   },
   "api": {
