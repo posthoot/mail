@@ -265,7 +265,7 @@
     "href": "https://xem.email"
   },
   "api": {
-    "openapi": "https://api.posthoot.com/openapi.json",
+    "openapi": "https://api.xem.email/openapi.json",
     "mdx": {
       "server": ["https://api.xem.email"]
     }
