@@ -96,3 +96,7 @@ MIT — see `LICENSE`.
 
 If you’re new here, start with:
 1) Vision (https://docs.posthoot.com/vision) → 2) Introduction (https://docs.posthoot.com/introduction) → 3) Quickstart (https://docs.posthoot.com/guides/quickstart) → 4) API Reference (see the API Reference tab in docs).
+
+## Component repositories
+
+Clone with `git clone --recurse-submodules` to retrieve the API (`server`), app (`client`), marketing website (`website`), infrastructure (`devops`), MCP server (`mcp`), payments service (`payments.go`), TypeScript SDK (`sdk`), and Go SDK (`sdk-go`). For an existing checkout, run `git submodule update --init --recursive`. Each component is pinned to its published commit; documentation lives in this repository under `docs/`.

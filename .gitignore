@@ -1,0 +1,6 @@
+# Local machine files and private credentials
+.DS_Store
+*.pem
+.env
+.env.*
+!.env.example
