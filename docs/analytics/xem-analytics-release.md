@@ -98,3 +98,13 @@ New PostgreSQL coverage checks stack/summary reconciliation, device/hour reconci
 ## Interactive chart release — September 10, 2026
 
 Published API chart aggregates in backend `61fba87` and interactive dashboard charts in frontend `eb7123d`. Campaign/newsletter volume and click bars reconcile to report totals; device and weekday/hour charts count observed click events with workspace and report filters. PostgreSQL analytics integration tests and frontend TypeScript checks passed before publication. Deployment remains a separate operation.
+
+## Dashboard Email / Campaigns tabs — September 10, 2026
+
+The homepage now defaults to Email, with a separate Campaigns tab reusing the marketing analytics workspace. The single Dashboard heading includes Outbox and Create campaign actions. Empty periods retain metrics and charts with a useful next step.
+
+`GET /api/v1/analytics/email-overview` returns `metricVersion: email-v1`, `summary`, rates with explicit numerators/denominators, and daily `series`. It uses the same analytics authentication and workspace permissions as other reports. The Next proxy accepts `email-overview` and scopes it to the signed-in workspace.
+
+This report includes all nondeleted, nontest email records, without requiring a campaign, contact, or list. Accepted sends are grouped by send timestamp; unsent/unknown records by creation timestamp. Pending, failed, and draft counts represent current statuses of records created during the range. A legacy SENT record without a valid send timestamp is unknown. Counts are email records, not individual CC/BCC recipients. Known bounces overlap sent counts. Engagement counts deduplicate per message and use events after sending and before the report cutoff. General email reports accept date/timezone filters; audience filters belong in Campaigns.
+
+Published backend `374769d` and frontend `611af22`. Validation: PostgreSQL analytics/handler/API tests, six frontend analytics tests, TypeScript, production build, and Chrome checks covering both tabs, one heading, standalone email activity, empty states, inclusive dates, errors/retry, and mobile overflow. Temporary test servers and the database container were stopped afterward. Deploy the backend before the frontend so the new endpoint is available; a missing endpoint is shown as an error, not fake zero activity.
