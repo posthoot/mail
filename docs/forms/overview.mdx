@@ -1,0 +1,41 @@
+---
+title: 'Signup forms'
+description: 'Brand your hosted forms or collect signups from your own HTML forms.'
+---
+
+Create a form in **Forms**, choose its audience, configure the fields, and publish it. Signups go to that audience. Paused and draft forms do not accept submissions.
+
+## Customize the hosted form
+
+The form editor’s **Appearance** controls include Light, Dark, and Warm presets; page, form, text, button, and button text colors; an HTTPS logo URL; sans serif, serif, or monospace fonts; and rounded or square corners. The live preview updates as you edit. Save the form to apply the appearance to its hosted page and iframe embed. Existing forms keep the default light appearance until customized.
+
+Use a publicly accessible HTTPS image URL for your logo. Choose text and background colors with sufficient contrast.
+
+## Use your own HTML form
+
+Open **Share your form** to copy the form action URL or the complete HTML example generated for your configured fields. You can style this HTML however you like. It does not need an API key or JavaScript.
+
+```html
+<form action="https://YOUR_API_HOST/public/forms/YOUR_FORM_SLUG" method="post">
+  <label>Email <input type="email" name="email" required maxlength="2000"></label>
+  <label><input type="checkbox" name="consent" value="true" required>
+    I agree to receive emails and understand I can unsubscribe at any time.
+  </label>
+  <div hidden aria-hidden="true">
+    <label>Website <input name="website" tabindex="-1" autocomplete="off"></label>
+  </div>
+  <button type="submit">Subscribe</button>
+</form>
+```
+
+Use the exact action URL and field names from your saved form. Supported field names are `email`, `first_name`, `last_name`, `company`, `phone`, and `message`; only configured fields are collected. Each field allows up to 2,000 characters. Required fields and email addresses are validated on the server.
+
+Both `application/x-www-form-urlencoded` and `multipart/form-data` are supported; file uploads are not. The `website` field is a spam trap and should remain empty. Consent must be `true`, `on`, or `1`. Successful native submissions show your configured success message. Validation errors show a page asking the visitor to return and correct the form.
+
+A submission ID is generated automatically for native forms. If your own code needs retry deduplication, send a UUID in `requestId`, reuse it for retries of that submission, and generate a fresh UUID for a new submission. Never hardcode one shared ID into a static form.
+
+## Existing JSON integrations
+
+The same endpoint continues accepting JSON with `fields`, boolean `consent`, `website`, and a UUID `requestId`. JSON requests receive JSON responses. Cross-origin JavaScript requests depend on the installation’s CORS configuration; native HTML form posts do not require CORS access.
+
+Public submissions use the existing rate limit and 32 KB request body limit. Existing unsubscribed contacts are not silently resubscribed.
